@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentverse/features/property/domain/entity/list_property_entity.dart';
 import 'package:rentverse/role/tenant/presentation/cubit/list_property/cubit.dart';
 import 'package:rentverse/role/tenant/presentation/cubit/list_property/state.dart';
+import 'package:rentverse/role/tenant/presentation/pages/property/detail_property.dart';
 
 class ListPropertyWidget extends StatelessWidget {
   const ListPropertyWidget({super.key, this.limitToThree = false});
@@ -92,7 +93,7 @@ Widget _buildPropertyList(
             );
           }
           final property = visibleItems[index];
-          return _buildPropertyItem(property);
+          return _buildPropertyItem(context, property);
         },
       ),
     ],
@@ -100,7 +101,7 @@ Widget _buildPropertyList(
 }
 
 /// Item builder function
-Widget _buildPropertyItem(PropertyEntity property) {
+Widget _buildPropertyItem(BuildContext context, PropertyEntity property) {
   String? imageUrl;
   if (property.images.isNotEmpty) {
     final primary = property.images.firstWhere(
@@ -121,98 +122,122 @@ Widget _buildPropertyItem(PropertyEntity property) {
   );
   final beds = attrBed.value.isNotEmpty ? attrBed.value : '-';
 
-  return Container(
-    padding: const EdgeInsets.all(10),
-    decoration: BoxDecoration(
-      color: Colors.white,
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
       borderRadius: BorderRadius.circular(12),
-      boxShadow: const [
-        BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3)),
-      ],
-    ),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: SizedBox(
-            width: 96,
-            height: 86,
-            child: imageUrl != null && imageUrl.isNotEmpty
-                ? CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (c, _) =>
-                        Container(color: Colors.grey.shade200),
-                    errorWidget: (c, _, __) => Container(
-                      color: Colors.grey.shade300,
-                      child: const Icon(Icons.image_not_supported),
-                    ),
-                  )
-                : Container(
-                    color: Colors.grey.shade200,
-                    child: const Icon(Icons.home, color: Colors.grey),
-                  ),
-          ),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => DetailProperty(property: property)),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                property.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(
+                width: 96,
+                height: 86,
+                child: imageUrl != null && imageUrl.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (c, _) =>
+                            Container(color: Colors.grey.shade200),
+                        errorWidget: (c, _, __) => Container(
+                          color: Colors.grey.shade300,
+                          child: const Icon(Icons.image_not_supported),
+                        ),
+                      )
+                    : Container(
+                        color: Colors.grey.shade200,
+                        child: const Icon(Icons.home, color: Colors.grey),
+                      ),
               ),
-              const SizedBox(height: 2),
-              Row(
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      '${property.city}, ${property.country}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  Text(
+                    property.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
                     ),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        size: 14,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          '${property.city}, ${property.country}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Rp${property.price}/mon',
+                    style: const TextStyle(
+                      color: Colors.teal,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.bed, size: 14, color: Colors.grey),
+                      const SizedBox(width: 4),
+                      Text('$beds', style: const TextStyle(fontSize: 12)),
+                      const SizedBox(width: 10),
+                      const Icon(Icons.bathtub, size: 14, color: Colors.grey),
+                      const SizedBox(width: 4),
+                      const Text('1', style: TextStyle(fontSize: 12)),
+                      const SizedBox(width: 10),
+                      const Icon(
+                        Icons.square_foot,
+                        size: 14,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(width: 4),
+                      const Text('500 Sqft', style: TextStyle(fontSize: 12)),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                'Rp${property.price}/mon',
-                style: const TextStyle(
-                  color: Colors.teal,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  const Icon(Icons.bed, size: 14, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  Text('$beds', style: const TextStyle(fontSize: 12)),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.bathtub, size: 14, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  const Text('1', style: TextStyle(fontSize: 12)),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.square_foot, size: 14, color: Colors.grey),
-                  const SizedBox(width: 4),
-                  const Text('500 Sqft', style: TextStyle(fontSize: 12)),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     ),
   );
 }
