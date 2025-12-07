@@ -43,6 +43,7 @@ class PropertyEntity {
   final PropertyTypeEntity? propertyType;
   final ListingTypeEntity? listingType;
   final List<PropertyAttributeEntity> attributes;
+  final List<AllowedBillingPeriodEntity> allowedBillingPeriods;
 
   const PropertyEntity({
     required this.id,
@@ -68,6 +69,7 @@ class PropertyEntity {
     required this.propertyType,
     required this.listingType,
     required this.attributes,
+    required this.allowedBillingPeriods,
   });
 }
 
@@ -131,5 +133,31 @@ class AttributeTypeEntity {
     required this.label,
     required this.dataType,
     required this.iconUrl,
+  });
+}
+
+class AllowedBillingPeriodEntity {
+  final String propertyId;
+  final int billingPeriodId;
+  final PropertyBillingPeriodEntity billingPeriod;
+
+  const AllowedBillingPeriodEntity({
+    required this.propertyId,
+    required this.billingPeriodId,
+    required this.billingPeriod,
+  });
+}
+
+class PropertyBillingPeriodEntity {
+  final int id;
+  final String slug;
+  final String label;
+  final int durationMonths;
+
+  const PropertyBillingPeriodEntity({
+    required this.id,
+    required this.slug,
+    required this.label,
+    required this.durationMonths,
   });
 }

@@ -37,6 +37,7 @@ import 'package:rentverse/features/property/data/repository/property_repository_
 import 'package:rentverse/features/property/data/source/property_api_service.dart';
 import 'package:rentverse/features/property/domain/repository/property_repository.dart';
 import 'package:rentverse/features/property/domain/usecase/get_properties_usecase.dart';
+import 'package:rentverse/features/property/domain/usecase/get_property_detail_usecase.dart';
 import 'package:rentverse/core/network/open_map_street_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -110,6 +111,9 @@ Future<void> setupServiceLocator() async {
   // Property usecases
   sl.registerLazySingleton(
     () => GetPropertiesUseCase(sl<PropertyRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => GetPropertyDetailUseCase(sl<PropertyRepository>()),
   );
   // Booking usecases
   sl.registerLazySingleton(

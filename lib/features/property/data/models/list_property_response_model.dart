@@ -83,6 +83,7 @@ class PropertyModel {
   final PropertyTypeModel? propertyType;
   final ListingTypeModel? listingType;
   final List<PropertyAttributeModel> attributes;
+  final List<AllowedBillingPeriodModel> allowedBillingPeriods;
 
   PropertyModel({
     required this.id,
@@ -108,11 +109,14 @@ class PropertyModel {
     required this.propertyType,
     required this.listingType,
     required this.attributes,
+    required this.allowedBillingPeriods,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> json) {
     final imagesJson = json['images'] as List<dynamic>? ?? [];
     final attrsJson = json['attributes'] as List<dynamic>? ?? [];
+    final allowedBillingJson =
+        json['allowedBillingPeriods'] as List<dynamic>? ?? [];
     return PropertyModel(
       id: json['id'] as String? ?? '',
       landlordId: json['landlordId'] as String? ?? '',
@@ -155,6 +159,12 @@ class PropertyModel {
             (e) => PropertyAttributeModel.fromJson(e as Map<String, dynamic>),
           )
           .toList(),
+      allowedBillingPeriods: allowedBillingJson
+          .map(
+            (e) =>
+                AllowedBillingPeriodModel.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
     );
   }
 
@@ -183,6 +193,71 @@ class PropertyModel {
       propertyType: propertyType?.toEntity(),
       listingType: listingType?.toEntity(),
       attributes: attributes.map((e) => e.toEntity()).toList(),
+      allowedBillingPeriods: allowedBillingPeriods
+          .map((e) => e.toEntity())
+          .toList(),
+    );
+  }
+}
+
+class AllowedBillingPeriodModel {
+  final String propertyId;
+  final int billingPeriodId;
+  final PropertyBillingPeriodModel billingPeriod;
+
+  AllowedBillingPeriodModel({
+    required this.propertyId,
+    required this.billingPeriodId,
+    required this.billingPeriod,
+  });
+
+  factory AllowedBillingPeriodModel.fromJson(Map<String, dynamic> json) {
+    return AllowedBillingPeriodModel(
+      propertyId: json['propertyId'] as String? ?? '',
+      billingPeriodId: (json['billingPeriodId'] as num?)?.toInt() ?? 0,
+      billingPeriod: PropertyBillingPeriodModel.fromJson(
+        json['billingPeriod'] as Map<String, dynamic>? ?? {},
+      ),
+    );
+  }
+
+  AllowedBillingPeriodEntity toEntity() {
+    return AllowedBillingPeriodEntity(
+      propertyId: propertyId,
+      billingPeriodId: billingPeriodId,
+      billingPeriod: billingPeriod.toEntity(),
+    );
+  }
+}
+
+class PropertyBillingPeriodModel {
+  final int id;
+  final String slug;
+  final String label;
+  final int durationMonths;
+
+  PropertyBillingPeriodModel({
+    required this.id,
+    required this.slug,
+    required this.label,
+    required this.durationMonths,
+  });
+
+  factory PropertyBillingPeriodModel.fromJson(Map<String, dynamic> json) {
+    return PropertyBillingPeriodModel(
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      slug: json['slug'] as String? ?? '',
+      label: json['label'] as String? ?? '',
+      durationMonths: (json['durationMonths'] as num?)?.toInt() ?? 0,
+    );
+  }
+
+  PropertyBillingPeriodEntity toEntity() {
+    return PropertyBillingPeriodEntity(
+      id: id,
+      slug: slug,
+      label: label,
+      durationMonths: durationMonths,
     );
   }
 }

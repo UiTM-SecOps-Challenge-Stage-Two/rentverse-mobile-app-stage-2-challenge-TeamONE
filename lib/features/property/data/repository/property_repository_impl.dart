@@ -15,4 +15,10 @@ class PropertyRepositoryImpl implements PropertyRepository {
     );
     return response.toEntity();
   }
+
+  @override
+  Future<PropertyEntity> getPropertyDetail(String id) async {
+    final response = await _apiService.getPropertyDetail(id);
+    return response.toEntity();
+  }
 }
