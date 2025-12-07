@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentverse/common/colors/custom_color.dart';
 import 'package:rentverse/core/services/service_locator.dart';
+import 'package:rentverse/features/auth/presentation/screen/camera_screen.dart';
 import 'package:rentverse/features/kyc/presentation/cubit/verify_ikyc_cubit.dart';
 import 'package:rentverse/features/kyc/presentation/cubit/verify_ikyc_state.dart';
 
@@ -23,6 +24,15 @@ class VerifyIKycScreen extends StatelessWidget {
       cubit.setKtpImage(file);
     } else {
       cubit.setSelfieImage(file);
+    }
+  }
+
+  Future<void> _openCameraForSelfie(BuildContext context) async {
+    final file = await Navigator.of(
+      context,
+    ).push<File?>(MaterialPageRoute(builder: (_) => const CameraScreen()));
+    if (file != null && context.mounted) {
+      context.read<VerifyIKycCubit>().setSelfieImage(file);
     }
   }
 
@@ -83,11 +93,11 @@ class VerifyIKycScreen extends StatelessWidget {
         );
       case VerifyIKycStep.selfie:
         return _UploadCard(
-          title: 'Upload Selfie',
+          title: 'Ambil Selfie',
           description:
-              'Ambil selfie sambil memegang KTP untuk verifikasi identitas.',
+              'Gunakan kamera depan, pastikan wajah dan KTP terlihat jelas.',
           file: state.selfieImage,
-          onPick: () => _pickImage(context, isKtp: false),
+          onPick: () => _openCameraForSelfie(context),
         );
       case VerifyIKycStep.review:
         return Column(
