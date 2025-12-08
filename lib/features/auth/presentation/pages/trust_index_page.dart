@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentverse/common/bloc/auth/auth_cubit.dart';
+import 'package:rentverse/common/colors/custom_color.dart';
 import 'package:rentverse/features/auth/presentation/cubit/trust_index/cubit.dart';
 import 'package:rentverse/features/auth/presentation/cubit/trust_index/state.dart';
 
@@ -219,7 +220,13 @@ class _ReviewsHeader extends StatelessWidget {
             ),
           ],
         ),
-        TextButton(onPressed: () {}, child: const Text('View All')),
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            'View All',
+            style: TextStyle(color: appPrimaryColor),
+          ),
+        ),
       ],
     );
   }

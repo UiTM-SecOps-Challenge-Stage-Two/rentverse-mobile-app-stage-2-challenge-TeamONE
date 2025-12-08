@@ -8,6 +8,7 @@ import 'package:rentverse/features/auth/presentation/cubit/profile/cubit.dart';
 import 'package:rentverse/features/auth/presentation/cubit/profile/state.dart';
 import 'package:rentverse/features/auth/presentation/screen/edit_profile_screen.dart';
 import 'package:rentverse/features/auth/presentation/pages/trust_index_page.dart';
+import 'package:rentverse/features/wallet/presentation/pages/my_wallet.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -99,9 +100,16 @@ class _ProfileView extends StatelessWidget {
                           icon: Icons.location_on_outlined,
                           label: 'Address',
                         ),
-                        const _ProfileMenuItem(
+                        _ProfileMenuItem(
                           icon: Icons.wallet,
                           label: 'My Wallet',
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const MyWalletPage(),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
