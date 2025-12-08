@@ -16,7 +16,9 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   }) : super(const ChatRoomState());
 
   final GetMessagesUseCase _getMessagesUseCase;
-  final SendMessageUseCase _sendMessageUseCase;
+  // ignore: unused_field
+  final SendMessageUseCase
+  _sendMessageUseCase; // HTTP send currently unused; messages are sent via socket
   final ChatSocketService _socketService;
   final String currentUserId;
 
@@ -78,8 +80,8 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
 
     emit(state.copyWith(sending: true, error: null));
     try {
+      // Send via WebSocket only (backend expects socket event, not HTTP CRUD)
       _socketService.sendMessage(roomId, content);
-      await _sendMessageUseCase(roomId, content);
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     } finally {

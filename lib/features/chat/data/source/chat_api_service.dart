@@ -54,6 +54,9 @@ class ChatApiServiceImpl implements ChatApiService {
   @override
   Future<List<ChatMessageModel>> getMessages(String roomId) async {
     try {
+      _logger.i(
+        'Chat messages request roomId=$roomId path=/chats/$roomId/messages',
+      );
       final response = await _dioClient.get('/chats/$roomId/messages');
       _logger.i('Chat messages success -> ${response.data}');
       final raw = response.data;
@@ -72,6 +75,9 @@ class ChatApiServiceImpl implements ChatApiService {
   @override
   Future<void> sendMessage(String roomId, String content) async {
     try {
+      _logger.i(
+        'Chat send request roomId=$roomId content=$content path=/chats/$roomId/messages',
+      );
       await _dioClient.post(
         '/chats/$roomId/messages',
         data: {'content': content},
