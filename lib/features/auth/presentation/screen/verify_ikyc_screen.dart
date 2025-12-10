@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentverse/common/colors/custom_color.dart';
 import 'package:rentverse/core/services/service_locator.dart';
 import 'package:rentverse/features/auth/presentation/screen/camera_screen.dart';
+import 'package:rentverse/features/auth/presentation/pages/profile_pages.dart';
 import 'package:rentverse/features/kyc/presentation/cubit/verify_ikyc_cubit.dart';
 import 'package:rentverse/features/kyc/presentation/cubit/verify_ikyc_state.dart';
 
@@ -55,7 +56,19 @@ class VerifyIKycScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Verify iKYC')),
+            appBar: AppBar(
+              title: const Text('Verify iKYC'),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => Scaffold(body: const ProfilePage()),
+                    ),
+                  );
+                },
+              ),
+            ),
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -85,45 +98,53 @@ class VerifyIKycScreen extends StatelessWidget {
     switch (state.step) {
       case VerifyIKycStep.ktp:
         return _UploadCard(
-          title: 'Upload KTP',
+          title: 'Upload ID',
           description:
-              'Unggah foto KTP kamu dengan jelas, pastikan teks dapat terbaca.',
+              'Upload your ID card photo clearly, make sure the text is readable.',
           file: state.ktpImage,
           onPick: () => _pickImage(context, isKtp: true),
         );
       case VerifyIKycStep.selfie:
         return _UploadCard(
-          title: 'Ambil Selfie',
+          title: 'Take a Selfie',
           description:
-              'Gunakan kamera depan, pastikan wajah dan KTP terlihat jelas.',
+              'Use the front camera, make sure your face and the ID card are both visible.',
           file: state.selfieImage,
           onPick: () => _openCameraForSelfie(context),
         );
       case VerifyIKycStep.review:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Review dokumen',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(height: 12),
-            _PreviewTile(
-              label: 'KTP',
-              file: state.ktpImage,
-              onTap: () => _pickImage(context, isKtp: true),
-            ),
-            const SizedBox(height: 12),
-            _PreviewTile(
-              label: 'Selfie',
-              file: state.selfieImage,
-              onTap: () => _pickImage(context, isKtp: false),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Pastikan foto jelas dan tidak blur. Jika sudah sesuai, kirim untuk diverifikasi.',
-            ),
-          ],
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Review documents',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              _PreviewTile(
+                label: 'ID',
+                file: state.ktpImage,
+                onTap: () => _pickImage(context, isKtp: true),
+              ),
+              const SizedBox(height: 12),
+              _PreviewTile(
+                label: 'Selfie',
+                file: state.selfieImage,
+                onTap: () => _pickImage(context, isKtp: false),
+              ),
+              const SizedBox(height: 16),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Make sure photos are clear and not blurry. If everything looks correct, submit for verification.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
         );
       case VerifyIKycStep.success:
         return Column(
@@ -132,7 +153,7 @@ class VerifyIKycScreen extends StatelessWidget {
             const Icon(Icons.check_circle, color: appSecondaryColor, size: 64),
             const SizedBox(height: 12),
             Text(
-              state.successMessage ?? 'KYC berhasil dikirim',
+              state.successMessage ?? 'KYC successfully submitted',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
@@ -155,9 +176,15 @@ class VerifyIKycScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          onPressed: () => Navigator.of(context).maybePop(),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => Scaffold(body: const ProfilePage()),
+              ),
+            );
+          },
           child: const Text(
-            'Kembali',
+            'Back to Profile',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
           ),
         ),
@@ -197,7 +224,7 @@ class VerifyIKycScreen extends StatelessWidget {
                       if (state.ktpImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Pilih foto KTP terlebih dahulu'),
+                            content: Text('Please choose an ID photo first'),
                           ),
                         );
                         return;
@@ -207,7 +234,7 @@ class VerifyIKycScreen extends StatelessWidget {
                       if (state.selfieImage == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Pilih selfie terlebih dahulu'),
+                            content: Text('Please choose a selfie first'),
                           ),
                         );
                         return;
@@ -242,13 +269,13 @@ class VerifyIKycScreen extends StatelessWidget {
   String _buttonLabel(VerifyIKycState state) {
     switch (state.step) {
       case VerifyIKycStep.ktp:
-        return state.ktpImage == null ? 'Pilih KTP' : 'Lanjutkan';
+        return state.ktpImage == null ? 'Choose ID' : 'Continue';
       case VerifyIKycStep.selfie:
-        return state.selfieImage == null ? 'Pilih Selfie' : 'Lanjutkan';
+        return state.selfieImage == null ? 'Choose Selfie' : 'Continue';
       case VerifyIKycStep.review:
-        return 'Kirim Verifikasi';
+        return 'Submit Verification';
       case VerifyIKycStep.success:
-        return 'Selesai';
+        return 'Done';
     }
   }
 }
@@ -349,7 +376,7 @@ class _UploadCard extends StatelessWidget {
                         color: Colors.grey,
                       ),
                       SizedBox(height: 8),
-                      Text('Ketuk untuk memilih foto'),
+                      Text('Tap to choose photo'),
                     ],
                   )
                 : ClipRRect(
@@ -411,7 +438,7 @@ class _PreviewTile extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
                   Text(
-                    file?.path.split('/').last ?? 'Belum ada file',
+                    file?.path.split('/').last ?? 'No file selected',
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],
