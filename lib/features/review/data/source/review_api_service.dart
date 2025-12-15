@@ -45,54 +45,38 @@ class ReviewApiServiceImpl implements ReviewApiService {
     final logger = Logger();
     final respData = response.data;
 
-    // Normalize possible shapes:
-    // 1) { status, message, meta, data: [ ... ] }
-    // 2) { status, message, meta, data: { items: [...] } }
-    // 3) [ ... ] (direct list)
-    // We'll return BaseResponseModel where `data` is a Map with keys 'items' and 'meta'.
+    // Expected contract (doc): { status, message, meta, data: [ ... ] }
+    // Keep a small defensive fallback to avoid crashes while logging mismatches.
     List<dynamic> items = [];
     Map<String, dynamic> meta = {};
 
-    try {
-      if (respData is Map<String, dynamic>) {
-        final maybeData = respData['data'];
-        if (maybeData is List) {
-          items = maybeData;
-        } else if (maybeData is Map) {
-          // data might itself contain items/meta
-          if (maybeData['items'] is List) {
-            items = maybeData['items'] as List<dynamic>;
-          } else {
-            // fallback: try to interpret keys as item map
-            logger.w(
-              'Unexpected `data` shape for property reviews: ${maybeData.runtimeType}',
-            );
-          }
-        } else if (respData['items'] is List) {
-          items = respData['items'] as List<dynamic>;
-        }
-
-        if (respData['meta'] is Map) {
-          meta = Map<String, dynamic>.from(respData['meta'] as Map);
-        } else if (maybeData is Map && maybeData['meta'] is Map) {
-          meta = Map<String, dynamic>.from(maybeData['meta'] as Map);
-        }
-      } else if (respData is List) {
-        items = respData;
+    if (respData is Map<String, dynamic>) {
+      final maybeItems = respData['data'];
+      if (maybeItems is List) {
+        items = maybeItems;
       } else {
         logger.w(
-          'Unexpected response type for getPropertyReviews: ${respData.runtimeType}',
+          'Unexpected data shape for property reviews: ${maybeItems.runtimeType}',
         );
       }
-    } catch (e) {
-      logger.e('Failed to normalize reviews response');
+
+      if (respData['meta'] is Map) {
+        meta = Map<String, dynamic>.from(respData['meta'] as Map);
+      }
+    } else {
+      logger.w(
+        'Unexpected response type for property reviews: ${respData.runtimeType}',
+      );
     }
 
     final normalized = {'items': items, 'meta': meta};
-
     final payload = respData is Map<String, dynamic>
-        ? respData
-        : {'status': 'success', 'data': normalized};
+        ? {...respData, 'data': normalized['items'], 'meta': normalized['meta']}
+        : {
+            'status': 'success',
+            'data': normalized['items'],
+            'meta': normalized['meta'],
+          };
 
     return BaseResponseModel.fromJson(payload, (json) => normalized);
   }

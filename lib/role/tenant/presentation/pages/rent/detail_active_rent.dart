@@ -10,6 +10,7 @@ import 'package:rentverse/role/tenant/presentation/widget/detail_property/owner_
 import 'package:rentverse/role/tenant/presentation/widget/detail_property/accessorise_widget.dart';
 import 'package:rentverse/role/tenant/presentation/cubit/rent/active_rent_detail_cubit.dart';
 import 'package:rentverse/role/tenant/presentation/cubit/rent/active_rent_detail_state.dart';
+import 'package:rentverse/role/tenant/presentation/widget/review/review_widget.dart';
 
 class ActiveRentDetailPage extends StatelessWidget {
   const ActiveRentDetailPage({super.key, required this.booking});
@@ -302,29 +303,62 @@ class _DetailRow extends StatelessWidget {
   }
 }
 
-class _ActionBar extends StatelessWidget {
+class _ActionBar extends StatefulWidget {
   const _ActionBar({required this.booking, required this.onExtend});
 
   final BookingListItemEntity booking;
   final VoidCallback onExtend;
 
   @override
+  State<_ActionBar> createState() => _ActionBarState();
+}
+
+class _ActionBarState extends State<_ActionBar> {
+  bool _alreadyReviewed = false;
+
+  Future<void> _handleReview() async {
+    final outcome = await showReviewDialog(
+      context,
+      bookingId: widget.booking.id,
+      propertyId: widget.booking.property.id,
+    );
+
+    if (outcome == ReviewOutcome.submitted ||
+        outcome == ReviewOutcome.alreadyReviewed) {
+      setState(() => _alreadyReviewed = true);
+      if (outcome == ReviewOutcome.submitted) {
+        // Optionally show the review list after submit? Keeping as-is.
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isFinished = booking.status.toUpperCase() == 'FINISHED';
+    final status = widget.booking.status.toUpperCase();
+    final isFinished = status == 'FINISHED';
+    final isActive = status == 'ACTIVE';
+
+    final reviewLabel = _alreadyReviewed ? 'View Review' : 'Review';
+    final reviewAction = _alreadyReviewed
+        ? () => showReviewsBottomSheet(context, widget.booking.property.id)
+        : _handleReview;
 
     if (isFinished) {
-      return CustomButton(
-        text: 'Review',
-        onTap: () {
-          // TODO: open review flow. Placeholder for now.
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Open review screen')));
-        },
+      return CustomButton(text: reviewLabel, onTap: reviewAction);
+    }
+
+    if (isActive) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          CustomButton(text: 'Extend', onTap: widget.onExtend),
+          const SizedBox(height: 10),
+          CustomButton(text: reviewLabel, onTap: reviewAction),
+        ],
       );
     }
 
-    return CustomButton(text: 'Extend', onTap: onExtend);
+    return CustomButton(text: 'Extend', onTap: widget.onExtend);
   }
 }
 
