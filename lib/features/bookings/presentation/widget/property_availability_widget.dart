@@ -70,8 +70,6 @@ class _PropertyAvailabilityWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final f = DateFormat('dd MMM yyyy');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -145,85 +143,160 @@ class _PropertyAvailabilityWidgetState
             ),
           ),
 
-        // List Unavailable Dates
+        // Calendar view: show current month + next 2 months
         if (_ranges.isNotEmpty)
-          SizedBox(
-            height: 110, // Sedikit dipertinggi agar layout lebih lega
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              // Menambah padding di awal dan akhir list agar tidak terpotong
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-              itemCount: _ranges.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 12),
-              itemBuilder: (context, idx) {
-                final item = _ranges[idx];
-                return Container(
-                  width: 240,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    // Menggunakan Border, bukan Shadow
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Baris Label "Booked/Unavailable"
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.event_busy,
-                            size: 14,
-                            color: Colors.red.shade400,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            "Telah dibooking",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red.shade400,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      // Baris Tanggal
-                      Text(
-                        '${f.format(item.start)} — ${f.format(item.end)}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(3, (i) {
+                    final month = DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month + i,
+                    );
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: _buildMonthCalendar(month),
+                    );
+                  }),
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Legend
+              Row(
+                children: [
+                  Container(width: 12, height: 12, color: Colors.grey.shade300),
+                  const SizedBox(width: 8),
+                  const Text('Tidak tersedia', style: TextStyle(fontSize: 12)),
+                  const SizedBox(width: 16),
+                  Container(
+                    width: 12,
+                    height: 12,
+                    color: Colors.transparent,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.fromBorderSide(
+                          BorderSide(color: Colors.grey),
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                      // Baris Alasan (Opsional)
-                      if (item.reason != null &&
-                          item.reason!.trim().isNotEmpty) ...[
-                        const SizedBox(height: 6),
-                        Text(
-                          item.reason!,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ],
+                    ),
                   ),
-                );
-              },
-            ),
+                  const SizedBox(width: 8),
+                  const Text('Tersedia', style: TextStyle(fontSize: 12)),
+                ],
+              ),
+            ],
           ),
       ],
     );
+  }
+
+  Widget _buildMonthCalendar(DateTime month) {
+    // month is year+month (day ignored)
+    final firstOfMonth = DateTime(month.year, month.month, 1);
+    final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
+
+    // weekday: 1 (Mon) .. 7 (Sun), we want to display starting Sun or Mon. We'll use Sun..Sat (start 7->0)
+    final firstWeekday = firstOfMonth.weekday % 7; // make Sunday = 0
+
+    // build list of DateTime? including leading blanks
+    final totalCells = ((firstWeekday + daysInMonth) / 7).ceil() * 7;
+
+    List<DateTime?> cells = List.generate(totalCells, (index) {
+      final dayIndex = index - firstWeekday + 1;
+      if (dayIndex < 1 || dayIndex > daysInMonth) return null;
+      return DateTime(month.year, month.month, dayIndex);
+    });
+
+    return Container(
+      width: 260,
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            DateFormat('MMMM yyyy').format(firstOfMonth),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 6),
+          // Weekday headers
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+                .map(
+                  (e) => Expanded(
+                    child: Center(
+                      child: Text(
+                        e,
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 6),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: cells.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              mainAxisSpacing: 6,
+              crossAxisSpacing: 6,
+              childAspectRatio: 1.2,
+            ),
+            itemBuilder: (context, idx) {
+              final date = cells[idx];
+              if (date == null) return const SizedBox.shrink();
+
+              final unavailable = _isDateUnavailable(date);
+
+              return Container(
+                decoration: BoxDecoration(
+                  color: unavailable
+                      ? Colors.grey.shade300
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Center(
+                  child: Text(
+                    '${date.day}',
+                    style: TextStyle(
+                      color: unavailable
+                          ? Colors.grey.shade700
+                          : Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _isDateUnavailable(DateTime date) {
+    for (final r in _ranges) {
+      // compare only date parts
+      final d = DateTime(date.year, date.month, date.day);
+      final s = DateTime(r.start.year, r.start.month, r.start.day);
+      final e = DateTime(r.end.year, r.end.month, r.end.day);
+      if (!d.isBefore(s) && !d.isAfter(e)) return true;
+    }
+    return false;
   }
 }
