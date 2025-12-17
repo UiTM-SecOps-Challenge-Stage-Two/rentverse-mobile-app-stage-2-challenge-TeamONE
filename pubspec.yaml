@@ -1,63 +1,59 @@
 name: rentverse
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.10.0
+  sdk: ">=3.5.1 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc : ^9.1.1
+  flutter_bloc: ^8.1.0 # Diturunkan sedikit biar aman
   provider: ^6.1.2
-  equatable: ^2.0.7
-  get_it: ^8.0.3
+  equatable: ^2.0.5
+  get_it: ^7.6.0
   intl: ^0.19.0
   floor: ^1.4.2
   retrofit: ^4.1.0
-  flutter_hooks: ^0.21.2
-  cached_network_image: ^3.4.1
-  cupertino_icons: ^1.0.8
-  dio: ^5.8.0
-  logger: ^2.6.0
+  flutter_hooks: ^0.20.0
+  cached_network_image: ^3.3.0
+  cupertino_icons: ^1.0.6
+  dio: ^5.4.0 # Versi 5.8 sering butuh update SDK
+  logger: ^2.0.0
   shared_preferences: ^2.2.2
   google_fonts: ^6.1.0
   dartz:
   toast: ^0.3.0
   lucide_icons: ^0.257.0
-  flutter_map: ^8.1.1
-  latlong2: ^0.9.1
-  geolocator: ^14.0.2
-  flutter_svg: ^2.2.0
-  dotted_border: ^3.1.0
-  file_picker: ^8.0.0
-  camera: ^0.11.0+1
-  carousel_slider: ^5.1.1
-  firebase_core: ^3.10.0
-  firebase_messaging: ^15.2.0
-  flutter_local_notifications: ^18.0.1
-  device_info_plus: ^10.1.0
+  flutter_map: ^6.0.0 # Versi 8 butuh Dart baru. Ini mungkin perlu penyesuaian kodingan nanti.
+  latlong2: ^0.9.0
+  geolocator: ^11.0.0 # Versi 14 terlalu tinggi
+  flutter_svg: ^2.1.0
+  dotted_border: ^2.1.0 # <-- INI PERBAIKAN UTAMANYA (Dari 3.1.0 ke 2.1.0)
+  file_picker: ^6.0.0
+  camera: ^0.10.5 # Versi 0.11 butuh Dart baru
+  carousel_slider: ^5.0.0
+  firebase_core: ^2.27.0 # Versi 3.x butuh Dart baru
+  firebase_messaging: ^14.7.0 # Menyesuaikan core
+  flutter_local_notifications: ^17.0.0
+  device_info_plus: ^9.0.0
   midtrans_snap: ^1.0.1
-  webview_flutter: ^4.8.0
-  url_launcher: ^6.3.0
+  webview_flutter: ^4.4.0
+  url_launcher: ^6.2.0
   socket_io_client: ^2.0.3
 
-  
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  flutter_lints: ^4.0.0
   retrofit_generator: ^8.2.1
   floor_generator: ^1.4.2
   build_runner: ^2.4.7
-  bloc_test: 
-
-
+  bloc_test:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -69,7 +65,6 @@ flutter:
     - assets/banner1.png
     - assets/banner2.png
     - dummy_data/city.json
-
 
   # To add assets to your application, add an assets section, like this:
   # assets:

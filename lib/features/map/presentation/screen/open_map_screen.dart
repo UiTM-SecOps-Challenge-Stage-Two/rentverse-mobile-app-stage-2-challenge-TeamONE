@@ -68,7 +68,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
                         // onPositionChanged will trigger and update _center & fetch address
                       },
                       onPositionChanged: (pos, hasGesture) {
-                        final newCenter = pos.center;
+                        final newCenter = pos.center ?? _center;
                         setState(() => _center = newCenter);
                         // When user is panning (hasGesture == true) debounce the fetch
                         _debounce?.cancel();
@@ -129,7 +129,8 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.05),
@@ -157,9 +158,10 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
                       ),
                     );
                   }
-                  
+
                   final location = state.location;
-                  final displayName = location?.displayName ?? 'Tap map to select';
+                  final displayName =
+                      location?.displayName ?? 'Tap map to select';
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,10 +186,11 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
                         ),
                       ),
                       if (location != null) ...[
-                         const SizedBox(height: 4),
-                         Text(
+                        const SizedBox(height: 4),
+                        Text(
                           '${location.lat.toStringAsFixed(5)}, ${location.lon.toStringAsFixed(5)}',
-                          style: const TextStyle(color: Colors.grey, fontSize: 12),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 12),
                         ),
                       ],
                       const SizedBox(height: 20),
@@ -201,15 +204,17 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: location != null ? () {
-                              Navigator.of(context).pop({
-                                'lat': location.lat,
-                                'lon': location.lon,
-                                'displayName': location.displayName,
-                                'city': location.city,
-                                'country': location.country,
-                              });
-                            } : null,
+                            onTap: location != null
+                                ? () {
+                                    Navigator.of(context).pop({
+                                      'lat': location.lat,
+                                      'lon': location.lon,
+                                      'displayName': location.displayName,
+                                      'city': location.city,
+                                      'country': location.country,
+                                    });
+                                  }
+                                : null,
                             borderRadius: BorderRadius.circular(12),
                             child: Center(
                               child: Text(
