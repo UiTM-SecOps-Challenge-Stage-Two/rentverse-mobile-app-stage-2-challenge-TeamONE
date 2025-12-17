@@ -25,4 +25,5 @@ abstract class AuthRepository {
   Future<void> logout();
   Future<bool> isLoggedIn();
   Future<UserEntity?> getLastLocalUser(); // Cuma ambil dari SharedPrefs
+  Future<DataState<String>> refreshToken();
 }

@@ -26,6 +26,10 @@ abstract class AuthApiService {
   Future<BaseResponseModel<Map<String, dynamic>>> verifyOtp(
     Map<String, dynamic> body,
   );
+
+  Future<BaseResponseModel<Map<String, dynamic>>> refreshToken(
+    Map<String, dynamic> body,
+  );
 }
 
 // 2. IMPLEMENTASI
@@ -134,6 +138,22 @@ class AuthApiServiceImpl implements AuthApiService {
   ) async {
     try {
       final response = await _dioClient.post('/auth/otp/verify', data: body);
+
+      return BaseResponseModel.fromJson(
+        response.data,
+        (json) => json as Map<String, dynamic>,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BaseResponseModel<Map<String, dynamic>>> refreshToken(
+    Map<String, dynamic> body,
+  ) async {
+    try {
+      final response = await _dioClient.post('/auth/refresh', data: body);
 
       return BaseResponseModel.fromJson(
         response.data,

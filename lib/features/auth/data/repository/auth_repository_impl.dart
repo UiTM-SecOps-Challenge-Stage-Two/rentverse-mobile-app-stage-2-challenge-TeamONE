@@ -207,4 +207,46 @@ class AuthRepositoryImpl implements AuthRepository {
       return DataFailed(e);
     }
   }
+  @override
+  Future<DataState<String>> refreshToken() async {
+    try {
+      final refreshToken = await _localDataSource.getRefreshToken();
+      if (refreshToken == null || refreshToken.isEmpty) {
+        return DataFailed(
+          DioException(
+            requestOptions: RequestOptions(path: '/refresh'),
+            error: 'No refresh token found',
+          ),
+        );
+      }
+
+      final body = {'refreshToken': refreshToken};
+      final httpResponse = await _apiService.refreshToken(body);
+
+      final data = httpResponse.data;
+      if (data != null && data['data'] != null) {
+        final tokenData = data['data'] as Map<String, dynamic>;
+        final newAccessToken = tokenData['accessToken'] as String?;
+        final newRefreshToken = tokenData['refreshToken'] as String?;
+
+        if (newAccessToken != null) {
+          await _localDataSource.saveTokens(
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+          );
+          return DataSuccess(data: newAccessToken);
+        }
+      }
+
+      return DataFailed(
+        DioException(
+          requestOptions: RequestOptions(path: '/refresh'),
+          error: 'Refresh token failed: invalid response',
+          type: DioExceptionType.badResponse,
+        ),
+      );
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
 }

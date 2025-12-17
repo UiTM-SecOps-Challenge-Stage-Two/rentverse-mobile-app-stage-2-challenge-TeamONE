@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../constant/api_urls.dart'; // Pastikan path ini sesuai dengan file ApiConstants kamu
+import 'package:rentverse/core/resources/data_state.dart';
+import 'package:rentverse/core/services/service_locator.dart';
+import 'package:rentverse/features/auth/domain/repository/auth_repository.dart';
+import '../constant/api_urls.dart';
 
 class DioInterceptor extends Interceptor {
   final Logger _logger;
@@ -17,6 +20,14 @@ class DioInterceptor extends Interceptor {
     _logger.i('--> ${options.method.toUpperCase()} ${options.uri}');
     _logger.t('Headers: ${options.headers}');
     _logger.t('Body: ${options.data}');
+
+    // Skip adding token for specific endpoints to avoid issues
+    final path = options.path;
+    if (path.contains('/auth/refresh') ||
+        path.contains('/auth/login') ||
+        path.contains('/auth/register')) {
+      return super.onRequest(options, handler);
+    }
 
     // 2. Ambil Token dari Shared Preferences
     final token = _sharedPreferences.getString(ApiConstants.tokenKey);
@@ -74,71 +85,50 @@ class DioInterceptor extends Interceptor {
       final newToken = await _refreshToken();
 
       if (newToken == null || newToken.isEmpty) {
+        // Refresh failed, propagate original error
+        _logger.w('Token refresh failed, propagating 401');
         return handler.next(err);
       }
 
+      // Refresh success, retry original request with new token
       final opts = err.requestOptions;
       opts.headers['Authorization'] = 'Bearer $newToken';
       opts.extra['__retry'] = true;
 
+      // Ensure we use the same Dio instance for retry
       final response = await _dio.fetch(opts);
       handler.resolve(response);
     } catch (e) {
+      // If retry fails, propagate the error (likely the original one or new one)
       handler.next(err);
     }
   }
 
   Future<String?> _refreshToken() {
+    // Deduplicate refresh requests
     final existing = _refreshFuture;
     if (existing != null) return existing;
 
-    final refreshToken = _sharedPreferences.getString(
-      ApiConstants.refreshTokenKey,
-    );
-    if (refreshToken == null || refreshToken.isEmpty) {
-      return Future.value(null);
-    }
-
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: ApiConstants.baseUrl,
-        headers: const {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      ),
-    );
-
     final future = (() async {
       try {
-        final response = await dio.post(
-          '/auth/refresh',
-          data: {'refreshToken': refreshToken},
-        );
+        // Use AuthRepository via ServiceLocator (Lazy)
+        // this avoids circular dependency during construction
+        final authRepo = sl<AuthRepository>();
+        final result = await authRepo.refreshToken();
 
-        final raw = response.data;
-        final data = raw is Map<String, dynamic> ? raw : null;
-        final tokenData = data?['data'] as Map<String, dynamic>?;
-        final access = tokenData?['accessToken'] as String?;
-        final newRefresh = tokenData?['refreshToken'] as String?;
-
-        if (access != null && access.isNotEmpty) {
-          await _sharedPreferences.setString(ApiConstants.tokenKey, access);
-          if (newRefresh != null && newRefresh.isNotEmpty) {
-            await _sharedPreferences.setString(
-              ApiConstants.refreshTokenKey,
-              newRefresh,
-            );
-          }
-          _logger.i('Token refreshed successfully');
-          return access;
+        if (result is DataSuccess && result.data != null) {
+          _logger.i('Token refreshed successfully via AuthRepository');
+          return result.data;
+        } else {
+          _logger.e('AuthRepository.refreshToken failed: ${result.error?.message}');
+          return null;
         }
       } catch (e) {
-        _logger.e('Refresh token failed: $e');
+        _logger.e('Unexpected error during refresh: $e');
+        return null;
       } finally {
         _refreshFuture = null;
       }
-      return null;
     })();
 
     _refreshFuture = future;

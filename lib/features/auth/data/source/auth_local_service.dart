@@ -10,6 +10,7 @@ abstract class AuthLocalDataSource {
   Future<UserModel?> getLastUser();
   Future<bool> isLoggedIn();
   Future<void> logout();
+  Future<String?> getRefreshToken();
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -69,5 +70,10 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       _sharedPreferences.remove(TOKEN_KEY),
       _sharedPreferences.remove(REFRESH_TOKEN_KEY),
     ]);
+  }
+
+  @override
+  Future<String?> getRefreshToken() async {
+    return _sharedPreferences.getString(REFRESH_TOKEN_KEY);
   }
 }
