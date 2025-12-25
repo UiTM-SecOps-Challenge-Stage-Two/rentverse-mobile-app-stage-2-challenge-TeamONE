@@ -1,5 +1,5 @@
 class CreatePropertyParams {
-  final List<String> imageFilePaths; // local file paths to upload
+  final List<String> imageFilePaths;
   final String title;
   final String? description;
   final int propertyTypeId;

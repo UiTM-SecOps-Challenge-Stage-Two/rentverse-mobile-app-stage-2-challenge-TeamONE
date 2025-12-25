@@ -16,12 +16,12 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // 1. Log Request Keluar
+
     _logger.i('--> ${options.method.toUpperCase()} ${options.uri}');
     _logger.t('Headers: ${options.headers}');
     _logger.t('Body: ${options.data}');
 
-    // Skip adding token for specific endpoints to avoid issues
+
     final path = options.path;
     if (path.contains('/auth/refresh') ||
         path.contains('/auth/login') ||
@@ -29,21 +29,21 @@ class DioInterceptor extends Interceptor {
       return super.onRequest(options, handler);
     }
 
-    // 2. Ambil Token dari Shared Preferences
+
     final token = _sharedPreferences.getString(ApiConstants.tokenKey);
 
-    // 3. Jika token ada, sisipkan ke Header Authorization
+
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
 
-    // Lanjut ke request server
+
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // 1. Log Response Sukses
+
     _logger.d('<-- ${response.statusCode} ${response.requestOptions.uri}');
     _logger.t('Data: ${response.data}');
 
@@ -52,7 +52,7 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    // 1. Log Error
+
     _logger.e('<-- ${err.response?.statusCode} ${err.requestOptions.uri}');
     _logger.e('Message: ${err.message}');
     _logger.e('Error Data: ${err.response?.data}');
@@ -85,34 +85,34 @@ class DioInterceptor extends Interceptor {
       final newToken = await _refreshToken();
 
       if (newToken == null || newToken.isEmpty) {
-        // Refresh failed, propagate original error
+
         _logger.w('Token refresh failed, propagating 401');
         return handler.next(err);
       }
 
-      // Refresh success, retry original request with new token
+
       final opts = err.requestOptions;
       opts.headers['Authorization'] = 'Bearer $newToken';
       opts.extra['__retry'] = true;
 
-      // Ensure we use the same Dio instance for retry
+
       final response = await _dio.fetch(opts);
       handler.resolve(response);
     } catch (e) {
-      // If retry fails, propagate the error (likely the original one or new one)
+
       handler.next(err);
     }
   }
 
   Future<String?> _refreshToken() {
-    // Deduplicate refresh requests
+
     final existing = _refreshFuture;
     if (existing != null) return existing;
 
     final future = (() async {
       try {
-        // Use AuthRepository via ServiceLocator (Lazy)
-        // this avoids circular dependency during construction
+
+
         final authRepo = sl<AuthRepository>();
         final result = await authRepo.refreshToken();
 

@@ -1,4 +1,4 @@
-// lib/features/auth/domain/repository/auth_repository.dart
+
 
 import 'package:rentverse/core/resources/data_state.dart';
 import 'package:rentverse/features/auth/domain/entity/login_request_entity.dart';
@@ -24,6 +24,6 @@ abstract class AuthRepository {
   });
   Future<void> logout();
   Future<bool> isLoggedIn();
-  Future<UserEntity?> getLastLocalUser(); // Cuma ambil dari SharedPrefs
+  Future<UserEntity?> getLastLocalUser();
   Future<DataState<String>> refreshToken();
 }

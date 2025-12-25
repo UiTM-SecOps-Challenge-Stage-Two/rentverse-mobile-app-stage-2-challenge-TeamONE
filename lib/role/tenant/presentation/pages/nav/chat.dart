@@ -13,7 +13,7 @@ class TenantChatPage extends StatelessWidget {
       builder: (context, authState) {
         if (authState is Authenticated) {
           final user = authState.user;
-          // If tenant and KYC not verified, show waiting message
+
           if (user.isTenant) {
             final kyc = user.tenantProfile?.kycStatus ?? '';
             if (kyc.toUpperCase() != 'VERIFIED') {

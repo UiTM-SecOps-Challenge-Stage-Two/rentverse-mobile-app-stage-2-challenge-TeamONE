@@ -15,7 +15,7 @@ Future<void> main() async {
   runApp(const MyTestApp());
 }
 
-/// Entry point for UI slicing without auth; always loads tenant navigation.
+
 class MyTestApp extends StatelessWidget {
   const MyTestApp({super.key});
 

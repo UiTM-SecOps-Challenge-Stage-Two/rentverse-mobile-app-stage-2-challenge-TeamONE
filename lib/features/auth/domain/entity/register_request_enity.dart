@@ -1,4 +1,4 @@
-// lib/features/auth/domain/entity/register_request_enity.dart
+
 
 class RegisterRequestEntity {
   final String email;

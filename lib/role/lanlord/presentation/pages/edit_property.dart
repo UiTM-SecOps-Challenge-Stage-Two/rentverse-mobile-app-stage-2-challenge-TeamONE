@@ -17,7 +17,7 @@ class EditPropertyPage extends StatefulWidget {
 }
 
 class _EditPropertyPageState extends State<EditPropertyPage> {
-  // Basic
+
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   late TextEditingController _projectController;
@@ -26,7 +26,7 @@ class _EditPropertyPageState extends State<EditPropertyPage> {
   late TextEditingController _countryController;
   late TextEditingController _sizeController;
 
-  // Pricing & amenities
+
   late TextEditingController _priceController;
   String _furnishing = 'Unfurnished';
   List<String> _features = [];
@@ -135,10 +135,10 @@ class _EditPropertyPageState extends State<EditPropertyPage> {
             ) ??
             _priceController.text.trim();
       }
-      // types and listing
+
       fields['propertyTypeId'] = _propertyTypeId;
       fields['listingTypeId'] = _listingTypeId;
-      // Basic metadata
+
       final metadata = <String, dynamic>{};
       if (_projectController.text.trim().isNotEmpty)
         metadata['projectName'] = _projectController.text.trim();
@@ -152,17 +152,17 @@ class _EditPropertyPageState extends State<EditPropertyPage> {
       metadata['furnishing'] = _furnishing;
       if (metadata.isNotEmpty) fields['metadata'] = metadata;
 
-      // Images
+
       if (_images.isNotEmpty) fields['images'] = _images;
 
-      // Location
+
       if (_addressController.text.trim().isNotEmpty)
         fields['address'] = _addressController.text.trim();
       if (_cityController.text.trim().isNotEmpty)
         fields['city'] = _cityController.text.trim();
       if (_countryController.text.trim().isNotEmpty)
         fields['country'] = _countryController.text.trim();
-      // billing period
+
       fields['billingPeriodIds'] = [_billingPeriodId];
 
       final usecase = sl<UpdatePropertyUseCase>();
@@ -392,7 +392,6 @@ class _EditPropertyPageState extends State<EditPropertyPage> {
   }
 }
 
-// --- Helper widgets (copied-slimmed from add property pages) ---
 
 class _LabeledField extends StatelessWidget {
   const _LabeledField({

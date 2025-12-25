@@ -1,4 +1,3 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentverse/common/bloc/auth/auth_cubit.dart';
@@ -124,7 +123,6 @@ _NavigationConfig _buildNavigationConfig(UserEntity user) {
     );
   }
 
-  // Default to tenant navigation when no landlord role is present
   return _NavigationConfig(
     pages: const [
       TenantHomePage(),

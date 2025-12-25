@@ -28,7 +28,7 @@ class ListPropertyWidget extends StatelessWidget {
   }
 }
 
-/// List builder function
+
 Widget _buildPropertyList(
   BuildContext context,
   List<PropertyEntity> items,
@@ -85,7 +85,7 @@ Widget _buildPropertyList(
         })]);
 }
 
-/// Item builder function
+
 Widget _buildPropertyItem(BuildContext context, PropertyEntity property) {
   String? imageUrl;
   if (property.images.isNotEmpty) {

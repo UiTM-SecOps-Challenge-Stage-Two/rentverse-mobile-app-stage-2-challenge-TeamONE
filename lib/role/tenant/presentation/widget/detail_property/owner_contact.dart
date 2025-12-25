@@ -95,7 +95,7 @@ class OwnerContact extends StatelessWidget {
       return ownerName!.trim();
     }
     if (landlordId.isNotEmpty) {
-      // Fallback to a short version of landlordId to avoid empty UI.
+
       return 'Owner ${landlordId.substring(0, landlordId.length > 6 ? 6 : landlordId.length)}';
     }
     return 'Owner';

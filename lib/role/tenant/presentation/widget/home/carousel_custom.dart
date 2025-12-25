@@ -22,7 +22,7 @@ class CarouselCustom extends StatelessWidget {
                 itemBuilder: (context, index, realIndex) {
                   final imagePath = state.images[index];
 
-                  // Widget Gambar
+
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: SizedBox(

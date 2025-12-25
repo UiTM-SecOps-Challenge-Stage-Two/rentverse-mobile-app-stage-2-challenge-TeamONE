@@ -1,4 +1,4 @@
-// lib/features/auth/presentation/screen/login_form_screen.dart
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +31,7 @@ class LoginFormScreen extends StatelessWidget {
             fit: BoxFit.contain,
           ),
         ),
-        leadingWidth: 120, // Memberikan ruang lebih untuk logo
+        leadingWidth: 120,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -58,7 +58,7 @@ class LoginFormScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // EMAIL INPUT
+
               Text(
                 "Email Address",
                 style: GoogleFonts.poppins(
@@ -106,7 +106,7 @@ class LoginFormScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // PASSWORD INPUT
+
               Text(
                 "Password",
                 style: GoogleFonts.poppins(
@@ -178,11 +178,11 @@ class LoginFormScreen extends StatelessWidget {
 
               const SizedBox(height: 40),
 
-              // LOGIN BUTTON
+
               BlocConsumer<LoginCubit, LoginState>(
                 listener: (context, state) {
                   if (state.status == LoginStatus.success) {
-                    // Refresh auth status to navigate to home
+
                     context.read<AuthCubit>().checkAuthStatus();
                   } else if (state.status == LoginStatus.failure) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -206,7 +206,7 @@ class LoginFormScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // REGISTER LINK
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -219,7 +219,7 @@ class LoginFormScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Pindah ke Register
+
                       context.read<AuthPageCubit>().showRegister();
                     },
                     child: Text(

@@ -60,7 +60,7 @@ class RegisterFormScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // FULL NAME
+
               Text(
                 "Full Name",
                 style: GoogleFonts.poppins(
@@ -127,7 +127,7 @@ class RegisterFormScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // EMAIL
+
               Text(
                 "Email Address",
                 style: GoogleFonts.poppins(
@@ -194,7 +194,7 @@ class RegisterFormScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // PHONE NUMBER
+
               Text(
                 "Phone Number",
                 style: GoogleFonts.poppins(
@@ -261,7 +261,7 @@ class RegisterFormScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // PASSWORD
+
               Text(
                 "Password",
                 style: GoogleFonts.poppins(
@@ -339,7 +339,7 @@ class RegisterFormScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // CONFIRM PASSWORD
+
               Text(
                 "Confirm Password",
                 style: GoogleFonts.poppins(
@@ -417,7 +417,7 @@ class RegisterFormScreen extends StatelessWidget {
 
               const SizedBox(height: 40),
 
-              // NEXT BUTTON
+
               BlocConsumer<RegisterCubit, RegisterState>(
                 listener: (context, state) {
                   if (state.status == RegisterStatus.success) {
@@ -487,7 +487,7 @@ class RegisterFormScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // LOGIN LINK
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

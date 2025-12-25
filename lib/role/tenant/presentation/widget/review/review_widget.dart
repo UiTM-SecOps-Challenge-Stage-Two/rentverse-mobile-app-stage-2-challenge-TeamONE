@@ -8,24 +8,23 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 enum ReviewOutcome { submitted, alreadyReviewed, cancelled, error }
 
-/// Fungsi utama untuk memanggil dialog
+
 Future<ReviewOutcome?> showReviewDialog(
   BuildContext context, {
   required String bookingId,
   required String propertyId,
 }) async {
-  // Kita panggil showModalBottomSheet yang mereturn ReviewOutcome
+
   return showModalBottomSheet<ReviewOutcome>(
     context: context,
-    isScrollControlled: true, // Agar full height saat keyboard muncul
+    isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    // Kita gunakan Widget terpisah agar Lifecycle (dispose) aman
+
     builder: (ctx) =>
         _ReviewBottomSheetContent(bookingId: bookingId, propertyId: propertyId));
 }
 
-// --- WIDGET TERPISAH (Refactor) ---
-// Memindahkan logika ke sini mencegah error '_dependents.isEmpty'
+
 class _ReviewBottomSheetContent extends StatefulWidget {
   final String bookingId;
   final String propertyId;
@@ -41,7 +40,7 @@ class _ReviewBottomSheetContent extends StatefulWidget {
 }
 
 class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
-  // Pindahkan variable state ke sini
+
   late final ValueNotifier<int> _ratingNotifier;
   late final TextEditingController _commentController;
   bool _isSubmitting = false;
@@ -55,13 +54,13 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
 
   @override
   void dispose() {
-    // Dispose aman dilakukan di sini karena Widget pasti sudah unmount
+
     _ratingNotifier.dispose();
     _commentController.dispose();
     super.dispose();
   }
 
-  // Helper label
+
   String _getRatingLabel(int star) {
     switch (star) {
       case 1:
@@ -105,7 +104,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
         final statusCode = dioErr?.response?.statusCode;
         final msg = resolveApiErrorMessage(dioErr, fallback: 'Unknown error');
 
-        // If backend returns 409, show specific message in Indonesian
+
         if (statusCode == 409) {
           Navigator.of(context).pop(ReviewOutcome.alreadyReviewed);
           ScaffoldMessenger.of(context).showSnackBar(
@@ -142,7 +141,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
 
   @override
   Widget build(BuildContext context) {
-    // Hitung padding keyboard (viewInsets)
+
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Container(
@@ -150,7 +149,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       padding: EdgeInsets.only(
-        bottom: bottomPadding, // Padding keyboard
+        bottom: bottomPadding,
         left: 20,
         right: 20,
         top: 12),
@@ -158,7 +157,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // 1. Handle Bar
+
             Center(
               child: Container(
                 width: 40,
@@ -168,7 +167,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
                   borderRadius: BorderRadius.circular(2)))),
             const SizedBox(height: 20),
 
-            // 2. Title
+
             const Text(
               'How was your experience?',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -178,7 +177,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
               style: TextStyle(color: Colors.grey, fontSize: 14)),
             const SizedBox(height: 24),
 
-            // 3. Star Rating Section
+
             ValueListenableBuilder<int>(
               valueListenable: _ratingNotifier,
               builder: (_, value, __) {
@@ -214,7 +213,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
               }),
             const SizedBox(height: 24),
 
-            // 4. Comment TextField
+
             TextField(
               controller: _commentController,
               maxLines: 4,
@@ -232,7 +231,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
                 contentPadding: const EdgeInsets.all(16))),
             const SizedBox(height: 24),
 
-            // 5. Submit Button
+
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -260,7 +259,7 @@ class _ReviewBottomSheetContentState extends State<_ReviewBottomSheetContent> {
   }
 }
 
-// Helper function untuk menampilkan list review (tidak berubah)
+
 Future<void> showReviewsBottomSheet(BuildContext context, String propertyId) {
   return showModalBottomSheet(
     context: context,

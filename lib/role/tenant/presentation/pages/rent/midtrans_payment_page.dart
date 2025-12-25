@@ -133,8 +133,8 @@ class _MidtransPaymentPageState extends State<MidtransPaymentPage> {
     if (!mounted) return;
     setState(() => _isProcessing = false);
 
-    // If payment succeeded (settlement/capture), navigate back to app home
-    // and reload user/profile data so app state is refreshed.
+
+
     try {
       final status = res is Map && res['transactionStatus'] != null
           ? res['transactionStatus'] as String
@@ -144,12 +144,12 @@ class _MidtransPaymentPageState extends State<MidtransPaymentPage> {
 
       if (status.toLowerCase() == 'settlement' ||
           status.toLowerCase() == 'capture') {
-        // Trigger auth refresh
+
         try {
           context.read<AuthCubit>().checkAuthStatus();
         } catch (_) {}
 
-        // Recreate tenant navigation and clear stack (acts like reload)
+
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (_) => NavigationContainer(initialIndex: 0, pages: [
@@ -185,7 +185,7 @@ class _MidtransPaymentPageState extends State<MidtransPaymentPage> {
             (route) => false);
       }
     } catch (_) {
-      // ignore parsing errors
+
     }
   }
 

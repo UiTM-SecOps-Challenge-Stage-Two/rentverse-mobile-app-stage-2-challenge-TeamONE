@@ -84,7 +84,7 @@ class EditProfileScreen extends StatelessWidget {
                                       final target = state.emailValue;
                                       if (target.isEmpty) return;
 
-                                      // send OTP then navigate to verification screen
+
                                       final sendUsecase = sl<SendOtpUseCase>();
                                       final params = SendOtpParams(
                                         target: target,
@@ -108,7 +108,7 @@ class EditProfileScreen extends StatelessWidget {
                                             );
 
                                         if (verified == true) {
-                                          // refresh profile on return
+
                                           cubit.loadProfile();
                                         }
                                       } else if (res is DataFailed) {

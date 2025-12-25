@@ -21,9 +21,9 @@ class PropertyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final priceText = _formatCurrency(item.currency, item.price);
-    // build a minimal PropertyEntity from the OwnerPropertyEntity so the
-    // detail page can be reused. We intentionally keep many fields empty
-    // since the listing provides only summary data.
+
+
+
     final property = PropertyEntity(
       id: item.id,
       landlordId: '',

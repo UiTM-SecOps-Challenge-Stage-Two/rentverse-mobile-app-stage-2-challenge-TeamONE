@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class YourTrustIndex extends StatelessWidget {
   const YourTrustIndex({super.key, required this.score});
 
-  final double score; // 0-100
+  final double score;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class YourTrustIndex extends StatelessWidget {
 class _RingPainter extends CustomPainter {
   _RingPainter({required this.progress});
 
-  final double progress; // 0-1
+  final double progress;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -63,10 +63,10 @@ class _RingPainter extends CustomPainter {
         colors: [Color(0xFF00E0C3), Color(0xFF00BFA6)]).createShader(rect)
       ..strokeCap = StrokeCap.round;
 
-    // background ring
+
     canvas.drawCircle(center, radius, bgPaint);
 
-    // foreground arc
+
     final sweep = 2 * math.pi * progress;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),

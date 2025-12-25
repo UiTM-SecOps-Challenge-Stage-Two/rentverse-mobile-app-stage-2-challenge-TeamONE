@@ -7,7 +7,7 @@ abstract class ReviewRepository {
     String? comment,
   });
 
-  /// Returns raw response map containing data and meta for pagination
+
   Future<DataState<Map<String, dynamic>>> getPropertyReviews(
     String propertyId,
     int limit,

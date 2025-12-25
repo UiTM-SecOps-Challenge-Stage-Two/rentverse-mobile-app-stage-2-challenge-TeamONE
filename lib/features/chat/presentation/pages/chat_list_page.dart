@@ -103,7 +103,7 @@ class _ChatListPageState extends State<ChatListPage> {
           c.propertyTitle.toLowerCase().contains(query) ||
           c.lastMessage.toLowerCase().contains(query);
 
-      // TODO: replace placeholder filter logic when read/unread status is available
+
       final hasUnread = c.unreadCount > 0;
 
       switch (_selectedFilter) {
@@ -142,7 +142,7 @@ class _ChatTile extends StatelessWidget {
                   otherUserAvatar: conversation.otherUserAvatar,
                   propertyTitle: conversation.propertyTitle,
                   currentUserId: authState.user.id)));
-          // Mark as read immediately when opening the room
+
           context.read<ConversationListCubit>().markAsRead(conversation.id);
         },
         child: Container(

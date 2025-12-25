@@ -27,7 +27,7 @@ class OpenMapScreen extends StatefulWidget {
 class _OpenMapScreenState extends State<OpenMapScreen> {
   late LatLng _center;
   late final MapController _mapController;
-  // small debounce to avoid spamming reverse geocode while user pans
+
   Timer? _debounce;
   late final ReverseGeocodeCubit _reverseCubit;
 
@@ -38,7 +38,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
     _mapController = MapController();
     _reverseCubit = ReverseGeocodeCubit(sl())
       ..fetch(_center.latitude, _center.longitude);
-    // initial fetch done above; we'll trigger further fetches from onPositionChanged
+
   }
 
   @override
@@ -66,12 +66,12 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
                       initialZoom: 15,
                       onTap: (_, point) {
                         _mapController.move(point, _mapController.camera.zoom);
-                        // onPositionChanged will trigger and update _center & fetch address
+
                       },
                       onPositionChanged: (pos, hasGesture) {
                         final newCenter = pos.center ?? _center;
                         setState(() => _center = newCenter);
-                        // When user is panning (hasGesture == true) debounce the fetch
+
                         _debounce?.cancel();
                         if (hasGesture) {
                           _debounce = Timer(
@@ -84,7 +84,7 @@ class _OpenMapScreenState extends State<OpenMapScreen> {
                             },
                           );
                         } else {
-                          // immediate fetch when movement ends/tap move
+
                           _reverseCubit.fetch(
                             _center.latitude,
                             _center.longitude,

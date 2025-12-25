@@ -40,7 +40,7 @@ class PropertyRepositoryImpl implements PropertyRepository {
 
   @override
   Future<PropertyEntity> createProperty(CreatePropertyParams params) async {
-    // Prepare fields as expected by the API. Complex arrays must be JSON strings.
+
     final Map<String, dynamic> fields = {
       'title': params.title,
       if (params.description != null) 'description': params.description,
@@ -53,7 +53,7 @@ class PropertyRepositoryImpl implements PropertyRepository {
       if (params.country != null) 'country': params.country,
       if (params.latitude != null) 'latitude': params.latitude.toString(),
       if (params.longitude != null) 'longitude': params.longitude.toString(),
-      // Arrays must be sent as JSON strings
+
       'billingPeriodIds': jsonEncode(params.billingPeriodIds),
       if (params.amenities != null) 'amenities': jsonEncode(params.amenities),
       if (params.attributes != null)

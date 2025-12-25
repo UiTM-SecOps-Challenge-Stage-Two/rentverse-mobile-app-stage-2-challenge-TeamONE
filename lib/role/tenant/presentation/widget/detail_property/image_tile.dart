@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rentverse/features/property/domain/entity/list_property_entity.dart';
 import 'package:rentverse/common/utils/network_utils.dart';
 
-/// Image gallery with a large preview and tappable thumbnails.
+
 class ImageTile extends StatefulWidget {
   const ImageTile({super.key, required this.images});
 

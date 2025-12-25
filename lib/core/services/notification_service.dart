@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../firebase_options.dart';
 import '../constant/api_urls.dart';
 
-/// Handles Firebase Messaging setup and device registration to backend.
+
 class NotificationService {
   NotificationService({
     required Dio dio,
@@ -44,7 +44,7 @@ class NotificationService {
         playSound: true,
       );
 
-  /// Ensure Firebase is initialized and background handler is registered.
+
   static Future<void> initializeFirebase() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -52,7 +52,7 @@ class NotificationService {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
-  /// Configure local notifications (needed to show notifications in foreground).
+
   Future<void> initLocalNotifications() async {
     const initializationSettings = InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
@@ -68,7 +68,7 @@ class NotificationService {
         ?.createNotificationChannel(_androidChannel);
   }
 
-  /// On iOS/macOS: allow showing notifications while app is in foreground.
+
   Future<void> configureForegroundPresentation() async {
     await _messaging.setForegroundNotificationPresentationOptions(
       alert: true,
@@ -77,12 +77,12 @@ class NotificationService {
     );
   }
 
-  /// Ask user for notification permission (iOS/Android 13+).
+
   Future<void> requestPermission() async {
     await _messaging.requestPermission(alert: true, badge: true, sound: true);
   }
 
-  /// Register current device token to backend.
+
   Future<void> registerDevice() async {
     final token = await _messaging.getToken();
     if (token == null || token.isEmpty) {
@@ -120,7 +120,7 @@ class NotificationService {
     }
   }
 
-  /// Re-register when token refreshes.
+
   void listenTokenRefresh() {
     _messaging.onTokenRefresh.listen((_) async {
       _logger.i('FCM token refreshed, re-registering device');
@@ -128,7 +128,7 @@ class NotificationService {
     });
   }
 
-  /// Log foreground messages to verify delivery; hook a local notification here if needed.
+
   void listenForegroundMessages() {
     FirebaseMessaging.onMessage.listen((message) async {
       final title = message.notification?.title;
@@ -137,25 +137,25 @@ class NotificationService {
         'Foreground message received: title="$title" body="$body" data=${message.data}',
       );
 
-      // Pipe chat messages to listeners so UI can update without manual refresh
+
       final type = message.data['type']?.toString().toUpperCase();
       if (type == 'CHAT_MESSAGE') {
         final enriched = Map<String, dynamic>.from(message.data);
-        // Ensure content/body is present for UI rendering
+
         if ((enriched['content'] ?? '').toString().isEmpty) {
           enriched['content'] = body ?? enriched['body'] ?? '';
         }
-        // Provide createdAt if missing
+
         enriched['createdAt'] ??= (message.sentTime ?? DateTime.now())
             .toIso8601String();
-        // Provide id fallback
+
         enriched['id'] ??=
             message.messageId ??
             DateTime.now().microsecondsSinceEpoch.toString();
         _chatMessageController.add(enriched);
       }
 
-      // Fallback to data payload if notification block is missing (data-only messages).
+
       final resolvedTitle = title ?? message.data['title'] as String?;
       final resolvedBody = body ?? message.data['body'] as String?;
 
@@ -205,14 +205,14 @@ class NotificationService {
         return info.utsname.machine;
       }
     } catch (_) {
-      // ignore and fallback
+
     }
     return 'Unknown Device';
   }
 }
 
-/// Top-level background handler required by Firebase Messaging.
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // Add logging or silent handling if needed.
+
 }

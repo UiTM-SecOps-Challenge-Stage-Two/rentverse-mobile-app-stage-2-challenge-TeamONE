@@ -21,10 +21,10 @@ class GetUserCubit extends Cubit<GetUserState> {
         return;
       }
     } catch (_) {
-      // swallow to allow local fallback
+
     }
 
-    // Fallback to the last cached/local user
+
     try {
       final local = await _getLocalUserUseCase();
       if (local != null) {

@@ -90,7 +90,7 @@ class MapPreview extends StatelessWidget {
             child: FlutterMap(
               options: MapOptions(
                 initialCenter: LatLng(lat, lon),
-                initialZoom: 15, // Slightly closer zoom for better context
+                initialZoom: 15,
                 interactionOptions: const InteractionOptions(
                   flags: InteractiveFlag.none,
                 ),

@@ -34,7 +34,7 @@ class _WalletView extends StatelessWidget {
           IconButton(
             icon: Icon(LucideIcons.history),
             onPressed: () {
-              // TODO: Navigate to transaction history
+
             },
           ),
         ],
@@ -192,7 +192,7 @@ class _QuickActions extends StatelessWidget {
             icon: LucideIcons.plus,
             label: 'Top Up',
             onTap: () {
-              // TODO: Navigate to top up
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Top Up coming soon')),
               );
@@ -205,7 +205,7 @@ class _QuickActions extends StatelessWidget {
             icon: LucideIcons.send,
             label: 'Transfer',
             onTap: () {
-              // TODO: Navigate to transfer
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Transfer coming soon')),
               );
@@ -312,7 +312,7 @@ class _TransactionsSection extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                // TODO: Navigate to all transactions
+
               },
               child: const Text('View All'),
             ),

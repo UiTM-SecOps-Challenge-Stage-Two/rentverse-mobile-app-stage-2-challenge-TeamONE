@@ -38,7 +38,6 @@ class _PricingAndAmenityPropertyPageState
   ];
 
 
-
   @override
   void initState() {
     super.initState();
@@ -362,7 +361,7 @@ class _PricingAndAmenityPropertyPageState
       _views = List<String>.from(state.views);
       _billingPeriodIds = List<int>.from(state.billingPeriodIds);
       if (_billingPeriodIds.isEmpty) _billingPeriodIds.add(1);
-      // listingTypeId reset logic kept but hidden from UI
+
       _listingTypeId = state.listingTypeId;
       _priceController.text = state.price;
     });

@@ -74,7 +74,7 @@ class BookingApiServiceImpl implements BookingApiService {
   @override
   Future<BookingResponseModel> rejectBooking(String bookingId) async {
     try {
-      // API expects a reason field even if caller doesn't supply one.
+
       final response = await _dioClient.post(
         '/bookings/$bookingId/reject',
         data: {'reason': 'Rejected by landlord'},
@@ -100,8 +100,8 @@ class BookingApiServiceImpl implements BookingApiService {
       final logger = Logger();
       final data = response.data;
 
-      // Support responses that return either a List at the root or an object
-      // with a `data` field that contains the list.
+
+
       List<dynamic> rawList = [];
       if (data is List) {
         rawList = data;

@@ -134,20 +134,49 @@ App Bundle akan tersimpan di: `build/app/outputs/bundle/release/`
 
 ## 🧪 Testing
 
-### Menjalankan Unit Tests
+### Menjalankan Tests
+
+Proyek ini sudah dilengkapi dengan basic widget tests. Untuk menjalankan semua tests:
 
 ```bash
 flutter test
 ```
 
-### Menjalankan dengan UI Testing Mode
+### Menjalankan Test Spesifik
 
 ```bash
-# Jalankan main_test.dart untuk UI slicing tanpa auth
+# Jalankan file test tertentu
+flutter test test/widget_test.dart
+
+# Jalankan test dengan nama tertentu
+flutter test --plain-name "Simple text widget test"
+```
+
+### Test Coverage
+
+Untuk melihat coverage dari tests:
+
+```bash
+flutter test --coverage
+```
+
+Coverage report akan tersimpan di `coverage/lcov.info`
+
+### UI Testing Mode (Development)
+
+Untuk development UI tanpa perlu login, gunakan `main_test.dart`:
+
+```bash
 flutter run lib/main_test.dart
 ```
 
-File `main_test.dart` berguna untuk development UI tanpa perlu login, langsung menampilkan tenant navigation.
+File ini berguna untuk:
+- Testing UI components tanpa autentikasi
+- Rapid prototyping
+- UI slicing
+- Langsung menampilkan tenant navigation
+
+> **Catatan**: `main_test.dart` melewati proses login dan langsung menampilkan halaman tenant untuk mempercepat development.
 
 ## 📁 Struktur Proyek
 

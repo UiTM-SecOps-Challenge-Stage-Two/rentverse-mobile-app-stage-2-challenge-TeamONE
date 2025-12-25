@@ -35,7 +35,7 @@ class TrustIndexCubit extends Cubit<TrustIndexState> {
   }
 
   double _scoreFromUser(UserEntity user) {
-    // Prefer landlord LRS when landlord role + data exists; otherwise tenant TTI; fallback to any available score.
+
     if (user.isLandlord && user.landlordProfile?.lrsScore != null) {
       return user.landlordProfile!.lrsScore;
     }

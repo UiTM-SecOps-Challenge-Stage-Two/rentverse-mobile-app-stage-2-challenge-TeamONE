@@ -51,7 +51,7 @@ class _PropertyReviewsWidgetState extends State<PropertyReviewsWidget> {
         final map = res.data as Map<String, dynamic>;
         final items = map['items'] as List<dynamic>? ?? [];
         final meta = map['meta'] as Map<String, dynamic>? ?? {};
-        // Ensure items are maps and safe to render
+
         final safeItems = <Map<String, dynamic>>[];
         for (final it in items) {
           if (it is Map<String, dynamic>) {
@@ -67,7 +67,7 @@ class _PropertyReviewsWidgetState extends State<PropertyReviewsWidget> {
         });
       }
     } catch (e) {
-      // ignore
+
     } finally {
       setState(() => _loading = false);
     }
@@ -75,7 +75,7 @@ class _PropertyReviewsWidgetState extends State<PropertyReviewsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Filter only tenant reviews (role == TENANT)
+
     final tenantItems = _items.where((it) {
       final role = (it['role'] as String?) ?? '';
       return role.toUpperCase() == 'TENANT';

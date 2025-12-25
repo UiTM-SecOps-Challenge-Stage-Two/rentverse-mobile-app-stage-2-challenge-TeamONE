@@ -45,8 +45,8 @@ class ReviewApiServiceImpl implements ReviewApiService {
     final logger = Logger();
     final respData = response.data;
 
-    // Expected contract (doc): { status, message, meta, data: [ ... ] }
-    // Keep a small defensive fallback to avoid crashes while logging mismatches.
+
+
     List<dynamic> items = [];
     Map<String, dynamic> meta = {};
 

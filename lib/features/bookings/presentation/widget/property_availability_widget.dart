@@ -75,7 +75,7 @@ class _PropertyAvailabilityWidgetState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        // Header Title
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: Row(
@@ -95,7 +95,7 @@ class _PropertyAvailabilityWidgetState
         ),
         const SizedBox(height: 12),
 
-        // Loading State
+
         if (_loading)
           const Center(
             child: Padding(
@@ -104,7 +104,7 @@ class _PropertyAvailabilityWidgetState
             ),
           ),
 
-        // Error State
+
         if (_error != null)
           Container(
             padding: const EdgeInsets.all(12),
@@ -119,7 +119,7 @@ class _PropertyAvailabilityWidgetState
             ),
           ),
 
-        // Empty State (Fully Available)
+
         if (!_loading && _ranges.isEmpty && _error == null)
           Container(
             width: double.infinity,
@@ -144,7 +144,7 @@ class _PropertyAvailabilityWidgetState
             ),
           ),
 
-        // Calendar view: show current month + next 2 months
+
         if (_ranges.isNotEmpty)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +166,7 @@ class _PropertyAvailabilityWidgetState
                 ),
               ),
               const SizedBox(height: 8),
-              // Legend
+
               Row(
                 children: [
                   Container(width: 12, height: 12, color: Colors.grey.shade300),
@@ -196,14 +196,14 @@ class _PropertyAvailabilityWidgetState
   }
 
   Widget _buildMonthCalendar(DateTime month) {
-    // month is year+month (day ignored)
+
     final firstOfMonth = DateTime(month.year, month.month, 1);
     final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
 
-    // weekday: 1 (Mon) .. 7 (Sun), we want to display starting Sun or Mon. We'll use Sun..Sat (start 7->0)
-    final firstWeekday = firstOfMonth.weekday % 7; // make Sunday = 0
 
-    // build list of DateTime? including leading blanks
+    final firstWeekday = firstOfMonth.weekday % 7;
+
+
     final totalCells = ((firstWeekday + daysInMonth) / 7).ceil() * 7;
 
     List<DateTime?> cells = List.generate(totalCells, (index) {
@@ -228,7 +228,7 @@ class _PropertyAvailabilityWidgetState
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 6),
-          // Weekday headers
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
@@ -292,7 +292,7 @@ class _PropertyAvailabilityWidgetState
 
   bool _isDateUnavailable(DateTime date) {
     for (final r in _ranges) {
-      // compare only date parts
+
       final d = DateTime(date.year, date.month, date.day);
       final s = DateTime(r.start.year, r.start.month, r.start.day);
       final e = DateTime(r.end.year, r.end.month, r.end.day);

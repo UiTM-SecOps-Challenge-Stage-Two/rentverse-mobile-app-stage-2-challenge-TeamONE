@@ -1,4 +1,4 @@
-// features/auth/data/models/response/login_response_model.dart
+
 import 'package:rentverse/features/auth/data/models/response/user_model.dart';
 
 class LoginResponseModel {

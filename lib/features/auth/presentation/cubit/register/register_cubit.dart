@@ -1,4 +1,4 @@
-// lib/features/auth/presentation/cubit/register/register_cubit.dart
+
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentverse/core/resources/data_state.dart';
@@ -23,12 +23,12 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  // METHOD BARU: Update Role
+
   void updateRole(String role) {
     emit(state.copyWith(role: role));
   }
 
-  // Update Parameter: Hapus 'role' dari parameter karena kita ambil dari State
+
   void validateFields({
     required String name,
     required String email,
@@ -78,7 +78,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String confirmPassword,
     required String phone,
   }) async {
-    // If there are visible validation errors, do not submit
+
     validateFields(
       name: name,
       email: email,
@@ -102,7 +102,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         password: password,
         name: name,
         phone: phone,
-        role: state.role, // <--- AMBIL DARI STATE
+        role: state.role,
       ),
     );
 

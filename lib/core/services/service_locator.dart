@@ -1,4 +1,4 @@
-// lib/core/services/service_locator.dart
+
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -118,7 +118,7 @@ Future<void> setupServiceLocator() async {
     () => ChatSocketService(sl<Logger>(), sl()),
   );
 
-  // Reviews
+
   sl.registerLazySingleton<ReviewApiService>(
     () => ReviewApiServiceImpl(sl<DioClient>()),
   );
@@ -130,7 +130,7 @@ Future<void> setupServiceLocator() async {
     () => GetPropertyReviewsUseCase(sl<ReviewRepository>()),
   );
 
-  // Auth data sources & services
+
   sl.registerLazySingleton<AuthLocalDataSource>(
     () => AuthLocalDataSourceImpl(sl()),
   );
@@ -138,14 +138,14 @@ Future<void> setupServiceLocator() async {
     () => AuthApiServiceImpl(sl<DioClient>()),
   );
 
-  // Auth repository
+
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(sl<AuthApiService>(), sl<AuthLocalDataSource>()),
   );
   sl.registerLazySingleton<PropertyApiService>(
     () => PropertyApiServiceImpl(sl<DioClient>()),
   );
-  // Landlord dashboard
+
   sl.registerLazySingleton<LandlordDashboardApiService>(
     () => LandlordDashboardApiServiceImpl(sl<DioClient>()),
   );
@@ -161,7 +161,7 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(sl<ChatApiService>()),
   );
-  // Disputes
+
   sl.registerLazySingleton<DisputesApiService>(
     () => DisputesApiServiceImpl(sl<DioClient>(), sl<Logger>()),
   );
@@ -176,7 +176,7 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<BookingsRepository>(
     () => BookingsRepositoryImpl(sl<BookingApiService>()),
   );
-  // OpenStreetMap / Nominatim
+
   sl.registerLazySingleton<OpenMapStreetApi>(() => OpenMapStreetApi());
   sl.registerLazySingleton<OpenMapRemoteDataSource>(
     () => OpenMapRemoteDataSourceImpl(sl<OpenMapStreetApi>()),
@@ -215,7 +215,7 @@ Future<void> setupServiceLocator() async {
     () => MidtransRepositoryImpl(sl<MidtransApiService>()),
   );
 
-  // Auth usecases
+
   sl.registerLazySingleton(() => GetLocalUserUseCase(sl<AuthRepository>()));
   sl.registerLazySingleton(() => IsLoggedInUsecase(sl<AuthRepository>()));
   sl.registerLazySingleton(() => LoginUseCase(sl<AuthRepository>()));
@@ -225,7 +225,7 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton(() => LogoutUseCase(sl<AuthRepository>()));
   sl.registerLazySingleton(() => SendOtpUseCase(sl<AuthRepository>()));
   sl.registerLazySingleton(() => VerifyOtpUseCase(sl<AuthRepository>()));
-  // Property usecases
+
   sl.registerLazySingleton(
     () => GetPropertiesUseCase(sl<PropertyRepository>()),
   );
@@ -245,7 +245,7 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton(() => GetConversationsUseCase(sl<ChatRepository>()));
   sl.registerLazySingleton(() => GetMessagesUseCase(sl<ChatRepository>()));
   sl.registerLazySingleton(() => SendMessageUseCase(sl<ChatRepository>()));
-  // Booking usecases
+
   sl.registerLazySingleton(
     () => CreateBookingUseCase(sl<BookingsRepository>()),
   );
@@ -266,11 +266,11 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton(() => PayInvoiceUseCase(sl<MidtransRepository>()));
 
   sl.registerLazySingleton(() => GetBookingsUseCase(sl<BookingsRepository>()));
-  // Landlord usecase
+
   sl.registerLazySingleton(
     () => GetLandlordDashboardUseCase(sl<LandlordDashboardRepository>()),
   );
 
-  // cubits
+
   sl.registerLazySingleton(() => AuthCubit());
 }

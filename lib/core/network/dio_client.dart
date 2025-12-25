@@ -1,4 +1,4 @@
-// lib/core/network/dio_client.dart
+
 
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
@@ -29,14 +29,14 @@ class DioClient {
     _dio.interceptors.add(DioInterceptor(_logger, _sharedPreferences, _dio));
   }
 
-  // Getter raw Dio (jika sewaktu-waktu butuh akses langsung)
+
   Dio get dio => _dio;
 
-  // ===========================================================================
-  // HTTP METHODS WRAPPER
-  // ===========================================================================
 
-  /// GET REQUEST
+
+
+
+
   Future<Response> get(
     String path, {
     Map<String, dynamic>? queryParameters,
@@ -54,14 +54,14 @@ class DioClient {
       );
       return response;
     } catch (e) {
-      rethrow; // Lempar error ke Repository untuk ditangani
+      rethrow;
     }
   }
 
-  /// POST REQUEST
+
   Future<Response> post(
     String path, {
-    dynamic data, // Bisa Map atau FormData
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -84,7 +84,7 @@ class DioClient {
     }
   }
 
-  /// PUT REQUEST
+
   Future<Response> put(
     String path, {
     dynamic data,
@@ -110,7 +110,7 @@ class DioClient {
     }
   }
 
-  /// PATCH REQUEST
+
   Future<Response> patch(
     String path, {
     dynamic data,
@@ -136,7 +136,7 @@ class DioClient {
     }
   }
 
-  /// DELETE REQUEST
+
   Future<Response> delete(
     String path, {
     dynamic data,

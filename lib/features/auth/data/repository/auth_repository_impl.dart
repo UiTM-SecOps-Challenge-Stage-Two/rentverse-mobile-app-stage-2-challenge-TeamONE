@@ -1,4 +1,4 @@
-//lib/features/auth/data/repository/auth_repository_impl.dart
+
 
 import 'package:dio/dio.dart';
 import 'package:rentverse/features/auth/data/source/auth_local_service.dart';
@@ -23,25 +23,25 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<DataState<UserEntity>> login(LoginRequestEntity params) async {
     try {
-      // 1. Convert Entity -> Model
+
       final requestModel = LoginRequestModel.fromEntity(params);
 
-      // 2. Panggil API (Return: LoginResponseModel yang punya token & user)
+
       final httpResponse = await _apiService.login(requestModel);
 
       if (httpResponse.data != null) {
         final loginData = httpResponse.data!;
 
-        // 3. LOGIC PENTING: Simpan Token (access + refresh) dan User secara terpisah
+
         await _localDataSource.saveTokens(
           accessToken: loginData.accessToken,
           refreshToken: loginData.refreshToken,
         );
 
-        // Simpan User Profile (untuk UI/Role)
+
         await _localDataSource.saveUser(loginData.user);
 
-        // 4. Return User Entity bersih ke Domain
+
         return DataSuccess(data: loginData.user);
       } else {
         return DataFailed(
@@ -62,12 +62,12 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final requestModel = RegisterRequestModel.fromEntity(params);
 
-      // Register biasanya return UserModel saja (tanpa token, kecuali auto-login)
+
       final httpResponse = await _apiService.register(requestModel);
 
       if (httpResponse.data != null) {
-        // Simpan data user terbaru (tanpa token, karena belum login)
-        // Atau jika backend auto-login, sesuaikan logicnya seperti login di atas
+
+
         await _localDataSource.saveUser(httpResponse.data!);
 
         return DataSuccess(data: httpResponse.data!);
@@ -91,7 +91,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final httpResponse = await _apiService.getProfile();
 
       if (httpResponse.data != null) {
-        // Selalu update cache user saat berhasil fetch profile terbaru
+
         await _localDataSource.saveUser(httpResponse.data!);
         return DataSuccess(data: httpResponse.data!);
       } else {
@@ -135,20 +135,20 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
-    // Bersihkan semua data sesi lokal
+
     await _localDataSource.logout();
   }
 
   @override
   Future<bool> isLoggedIn() async {
-    // Cek ke local data source apakah token/user ada
+
     return _localDataSource.isLoggedIn();
   }
 
   @override
   Future<UserEntity?> getLastLocalUser() async {
     return _localDataSource
-        .getLastUser(); // Panggil local data source yg kita buat tadi
+        .getLastUser();
   }
 
   @override
@@ -187,7 +187,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final httpResponse = await _apiService.verifyOtp(body);
 
       if (httpResponse.status.toLowerCase() == 'success') {
-        // response.data may contain isUserUpdated flag
+
         final data = httpResponse.data;
         if (data != null && data['isUserUpdated'] != null) {
           final isUpdated = data['isUserUpdated'] == true;

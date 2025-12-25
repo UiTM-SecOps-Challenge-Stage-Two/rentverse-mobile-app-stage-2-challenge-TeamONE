@@ -48,7 +48,7 @@ class ReviewRepositoryImpl implements ReviewRepository {
         cursor,
       );
       if (resp.data != null) {
-        // resp.data is expected to be a Map with 'items' and 'meta'
+
         final raw = resp.data!;
         final items = raw['items'];
         final meta = raw['meta'];

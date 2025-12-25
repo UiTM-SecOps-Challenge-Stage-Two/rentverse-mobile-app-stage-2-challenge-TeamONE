@@ -1,4 +1,4 @@
-//lib/features/auth/data/models/response/user_model.dart
+
 
 import 'package:rentverse/features/auth/domain/entity/user_entity.dart';
 
@@ -22,7 +22,7 @@ class UserModel extends UserEntity {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    // Build roles from either 'roles' array or fallback 'role' string
+
     List<UserRoleModel>? parsedRoles;
     if (json['roles'] != null) {
       parsedRoles = (json['roles'] as List)
@@ -30,7 +30,7 @@ class UserModel extends UserEntity {
           .map((e) => UserRoleModel.fromJson(e))
           .toList();
     } else if (json['role'] is String && (json['role'] as String).isNotEmpty) {
-      // Fallback: backend provided single role string
+
       parsedRoles = [
         UserRoleModel(role: RoleModel(name: json['role'] as String)),
       ];
@@ -50,22 +50,22 @@ class UserModel extends UserEntity {
       avatarUrl: json['avatarUrl'] as String?,
       isVerified: (json['isVerified'] as bool?) ?? false,
 
-      // Parse DateTime
+
       createdAt: json['createdAt'] != null
           ? DateTime.tryParse(json['createdAt'] as String)
           : null,
 
-      // Parse List Roles
+
       roles: parsedRoles,
 
-      // Parse Tenant Profile (Nullable)
+
       tenantProfile: json['tenantProfile'] != null
           ? TenantProfileModel.fromJson(
               json['tenantProfile'] as Map<String, dynamic>,
             )
           : null,
 
-      // Parse Landlord Profile (Nullable)
+
       landlordProfile: json['landlordProfile'] != null
           ? LandlordProfileModel.fromJson(
               json['landlordProfile'] as Map<String, dynamic>,
@@ -74,7 +74,7 @@ class UserModel extends UserEntity {
     );
   }
 
-  // Penting untuk menyimpan user session ke SharedPreferences
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -87,10 +87,10 @@ class UserModel extends UserEntity {
       'isVerified': isVerified,
       'createdAt': createdAt?.toIso8601String(),
 
-      // Convert list roles ke json
+
       'roles': roles?.map((e) => (e as UserRoleModel).toJson()).toList(),
 
-      // Convert profiles ke json
+
       'tenantProfile': tenantProfile != null
           ? (tenantProfile as TenantProfileModel).toJson()
           : null,

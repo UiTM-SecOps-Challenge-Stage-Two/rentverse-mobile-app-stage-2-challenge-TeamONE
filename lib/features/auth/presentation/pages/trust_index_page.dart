@@ -20,10 +20,10 @@ class TrustIndexPage extends StatelessWidget {
       create: (_) {
         final cubit = TrustIndexCubit();
         cubit.loadFromAuthState(context.read<AuthCubit>().state);
-        // Ensure fresh data from /auth/me
+
         cubit.refreshFromApi();
 
-        // Log current auth/me fetch for debugging
+
         try {
           final authState = context.read<AuthCubit>().state;
           if (authState is Authenticated) {
@@ -87,15 +87,15 @@ class _ScoreCard extends StatelessWidget {
 
   final double score;
 
-  // Definisi warna agar sesuai dengan gambar referensi
-  // Warna hijau mint cerah
+
+
   static const Color _mintGreen = Color(0xFF00FCA8);
-  // Warna background abu-abu terang untuk track lingkaran
+
   static const Color _trackColor = Color(0xFFE0E0E0);
 
   @override
   Widget build(BuildContext context) {
-    // Pastikan score di antara 0 dan 100
+
     final double clampedScore = score.clamp(0, 100);
     final double percentage = clampedScore / 100;
 
@@ -121,7 +121,7 @@ class _ScoreCard extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  // Menggunakan CustomPaint sebagai pengganti CircularProgressIndicator
+
                   CustomPaint(
                     size: const Size(200, 200),
                     painter: _CircularProgressBarPainter(
@@ -129,13 +129,13 @@ class _ScoreCard extends StatelessWidget {
                       strokeWidth: 24,
                       color: _mintGreen,
                       backgroundColor: _trackColor)),
-                  // Teks Angka di tengah
+
                   Text(
                     clampedScore.toStringAsFixed(0),
                     style: const TextStyle(
-                      fontSize: 48, // Ukuran font lebih besar
+                      fontSize: 48,
                       fontWeight: FontWeight.bold,
-                      color: _mintGreen, // Warna teks mengikuti warna progress
+                      color: _mintGreen,
                       letterSpacing: -1))]))])));
   }
 }
@@ -156,44 +156,44 @@ class _CircularProgressBarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Offset center = Offset(size.width / 2, size.height / 2);
-    // Radius dihitung agar stroke tidak terpotong di pinggir widget
+
     final double radius = (math.min(size.width, size.height) - strokeWidth) / 2;
 
-    // 1. Gambar Track Latar Belakang (Lingkaran Abu-abu Penuh)
+
     final Paint backgroundPaint = Paint()
       ..color = backgroundColor
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke
-      // StrokeCap.round membuat ujung lingkaran membulat
+
       ..strokeCap = StrokeCap.round;
 
     canvas.drawCircle(center, radius, backgroundPaint);
 
-    // 2. Gambar Progress Arc (Busur Hijau)
+
     final Paint progressPaint = Paint()
       ..color = color
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke
-      // KUNCI UTAMA: StrokeCap.round membuat ujung busur membulat
+
       ..strokeCap = StrokeCap.round;
 
-    // Menghitung sudut sapuan berdasarkan persentase
+
     final double sweepAngle = 2 * math.pi * percentage;
-    // Mulai dari -pi/2 (jam 12 tepat)
+
     const double startAngle = -math.pi / 2;
 
-    // Menggambar busur
+
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       startAngle,
       sweepAngle,
-      false, // useCenter false agar jadi cincin, bukan potongan pie
+      false,
       progressPaint);
   }
 
   @override
   bool shouldRepaint(covariant _CircularProgressBarPainter oldDelegate) {
-    // Gambar ulang jika persentase atau warna berubah
+
     return oldDelegate.percentage != percentage || oldDelegate.color != color;
   }
 }

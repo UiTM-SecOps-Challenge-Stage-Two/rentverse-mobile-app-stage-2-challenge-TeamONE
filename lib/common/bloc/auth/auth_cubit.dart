@@ -1,4 +1,4 @@
-// lib/common/bloc/auth/auth_cubit.dart
+
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentverse/common/bloc/auth/auth_state.dart';
@@ -15,20 +15,20 @@ class AuthCubit extends Cubit<AuthState> {
       final bool hasToken = await sl<IsLoggedInUsecase>().call();
 
       if (hasToken) {
-        // First load local cached user to show something quickly
+
         final local = await sl<GetLocalUserUseCase>().call();
         if (local != null) {
           emit(Authenticated(user: local));
         }
 
-        // Then fetch fresh profile from server (/auth/me) and update state
+
         try {
           final result = await sl<GetUserUseCase>().call();
           if (result is DataSuccess && result.data != null) {
             emit(Authenticated(user: result.data!));
           }
         } catch (_) {
-          // ignore network errors but keep local user if present
+
         }
       } else {
         emit(UnAuthenticated());

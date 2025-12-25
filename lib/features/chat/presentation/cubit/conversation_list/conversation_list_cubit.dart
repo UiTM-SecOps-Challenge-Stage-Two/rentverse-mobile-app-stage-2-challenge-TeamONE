@@ -14,7 +14,7 @@ class ConversationListCubit extends Cubit<ConversationListState> {
     this._socketService,
     this._notificationService,
   ) : super(const ConversationListState()) {
-    // Ensure socket is connected and listen for incoming messages globally
+
     try {
       _socketService.connect();
     } catch (_) {}
@@ -23,7 +23,7 @@ class ConversationListCubit extends Cubit<ConversationListState> {
       _handleIncoming(raw);
     });
 
-    // Fallback: also listen to notification stream for CHAT_MESSAGE
+
     _notificationSubscription = _notificationService.chatMessageStream.listen(
       (data) => _handleIncoming(data),
     );
@@ -112,13 +112,13 @@ class ConversationListCubit extends Cubit<ConversationListState> {
       }).toList();
 
       if (updated) {
-        // move most recent conversations to top
+
         updatedList.sort((a, b) => b.lastMessageAt.compareTo(a.lastMessageAt));
         emit(state.copyWith(conversations: updatedList));
       } else {
-        // If the incoming message belongs to a room we don't have yet,
-        // refresh the conversation list from the backend so the new
-        // conversation appears immediately.
+
+
+
         unawaited(load());
       }
     } catch (_) {}

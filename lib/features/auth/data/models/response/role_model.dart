@@ -1,5 +1,5 @@
-// lib/features/auth/data/models/response/role_model.dart
-// Merepresentasikan tabel pivot 'user_roles'
+
+
 import 'package:rentverse/features/auth/domain/entity/user_entity.dart';
 
 class UserRoleModel extends UserRoleEntity {
@@ -8,7 +8,7 @@ class UserRoleModel extends UserRoleEntity {
   factory UserRoleModel.fromJson(Map<String, dynamic> json) {
     return UserRoleModel(
       roleId: json['roleId'],
-      // Jika object 'role' ada, parse menggunakan RoleModel
+
       role: json['role'] != null ? RoleModel.fromJson(json['role']) : null,
     );
   }
@@ -21,7 +21,7 @@ class UserRoleModel extends UserRoleEntity {
   }
 }
 
-// Merepresentasikan tabel master 'roles'
+
 class RoleModel extends RoleEntity {
   const RoleModel({super.id, super.name});
 

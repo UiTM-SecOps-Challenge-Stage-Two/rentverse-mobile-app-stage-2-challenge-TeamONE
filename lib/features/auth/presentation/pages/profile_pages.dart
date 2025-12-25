@@ -49,13 +49,13 @@ class _ProfileView extends StatelessWidget {
           child: Stack(children: [
         Container(color: Colors.white),
 
-        // Header background layer
+
         SizedBox(
             height: 260,
             width: double.infinity,
             child: const _HeaderBackground()),
 
-        // Content layer
+
         SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(16, 140, 16, 24),
             child: Column(children: [
@@ -111,8 +111,8 @@ class _ProfileView extends StatelessWidget {
                     valueColor: Colors.red,
                     onTap: () async {
                       await sl<LogoutUseCase>()();
-                      // refresh auth state so navigation reacts
-                      // ignore: use_build_context_synchronously
+
+
                       context.read<AuthCubit>().checkAuthStatus();
                     })
               ])
@@ -167,7 +167,7 @@ class _ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.bottomCenter, children: [
       Column(children: [
-        // Bagian Avatar (Tidak berubah)
+
         Stack(children: [
           CircleAvatar(
               radius: 48,
@@ -199,16 +199,16 @@ class _ProfileHeader extends StatelessWidget {
               style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
         const SizedBox(height: 6),
 
-        // --- PERUBAHAN ADA DI SINI (ROW) ---
+
         Row(mainAxisSize: MainAxisSize.min, children: [
-          // 1. Tombol Edit dipindahkan ke paling KIRI
+
           GestureDetector(
               onTap: () async {
-                // Navigate to edit screen; EditProfileScreen handles UpdateProfileUseCase.
+
                 await Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => const EditProfileScreen()));
-                // After returning, refresh profile
-                // ignore: use_build_context_synchronously
+
+
                 if (context.mounted) {
                   final cubit = context.read<ProfileCubit>();
                   cubit.loadProfile();
@@ -221,15 +221,15 @@ class _ProfileHeader extends StatelessWidget {
                   child: Icon(LucideIcons.edit,
                       size: 14, color: appSecondaryColor))),
 
-          const SizedBox(width: 8), // Jarak antara tombol edit dan status
-          // 2. Ikon Verified/Error
+          const SizedBox(width: 8),
+
           Icon(isVerified ? LucideIcons.badgeCheck : LucideIcons.alertCircle,
               size: 14,
               color:
                   isVerified ? Colors.green.shade600 : Colors.orange.shade700),
           const SizedBox(width: 6),
 
-          // 3. Teks Verified/Not Verified
+
           Text(isVerified ? 'Verified' : 'Not verified',
               style: TextStyle(
                   fontSize: 12,

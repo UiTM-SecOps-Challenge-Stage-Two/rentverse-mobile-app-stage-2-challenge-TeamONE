@@ -86,7 +86,7 @@ class _TenantRentPageState extends State<TenantRentPage> {
               final comment = commentController.text.trim();
               Navigator.of(context).pop(true);
 
-              // call submit usecase
+
               try {
                 final usecase = sl<SubmitReviewUseCase>();
                 final params = SubmitReviewParams(
@@ -120,7 +120,7 @@ class _TenantRentPageState extends State<TenantRentPage> {
 
   @override
   Widget build(BuildContext context) {
-    // If user is tenant and KYC not VERIFIED, show waiting message
+
     final authState = context.watch<AuthCubit>().state;
     if (authState is Authenticated && authState.user.isTenant) {
       final kyc = authState.user.tenantProfile?.kycStatus ?? '';
@@ -188,7 +188,7 @@ class _TenantRentPageState extends State<TenantRentPage> {
                 return Center(child: Text(state.error!));
               }
 
-              // Aggregate all bookings into a single map to avoid duplicates
+
               final allMap = <String, BookingListItemEntity>{};
               for (final list in [
                 state.pendingPayment,
@@ -206,7 +206,7 @@ class _TenantRentPageState extends State<TenantRentPage> {
 
               final all = allMap.values.toList();
 
-              // Helper to filter by exact status matches (case-insensitive)
+
               List<BookingListItemEntity> byStatuses(List<String> statuses) {
                 final set = statuses.map((s) => s.toUpperCase()).toSet();
                 return all
@@ -214,8 +214,8 @@ class _TenantRentPageState extends State<TenantRentPage> {
                     .toList();
               }
 
-              // New tab order requested: Pending, Pending Payment, Paid,
-              // Active, Completed, Overdue, Canceled
+
+
               final bookingPending = byStatuses(['PENDING', 'PENDING_PAYMENT']);
               final bookingPendingPayment = byStatuses(['CONFIRMED']);
               final bookingPaid = byStatuses(['PAID']);
@@ -229,8 +229,8 @@ class _TenantRentPageState extends State<TenantRentPage> {
 
               return TabBarView(
                 children: [
-                  // Pending (PENDING, PENDING_PAYMENT) — PENDING_PAYMENT should
-                  // show disabled button with label "Waiting For Accept".
+
+
                   _BookingList(
                     statusLabel: 'Approved by the owner',
                     items: _sorted(bookingPending),
@@ -238,42 +238,42 @@ class _TenantRentPageState extends State<TenantRentPage> {
                     isPendingTab: true,
                     onTap: (item) => _handlePayment(context, item)),
 
-                  // Pending Payment (CONFIRMED)
+
                   _BookingList(
                     statusLabel: 'Waiting for payment',
                     items: _sorted(bookingPendingPayment),
                     buttonLabel: 'Go to Payment',
                     onTap: (item) => _handlePayment(context, item)),
 
-                  // Paid
+
                   _BookingList(
                     statusLabel: 'Paid',
                     items: _sorted(bookingPaid),
                     buttonLabel: 'View Detail',
                     onTap: (item) => _openActiveDetail(context, item)),
 
-                  // Active
+
                   _BookingList(
                     statusLabel: 'Active Booking',
                     items: _sorted(bookingActive),
                     buttonLabel: 'View Detail',
                     onTap: (item) => _openActiveDetail(context, item)),
 
-                  // Completed
+
                   _BookingList(
                     statusLabel: 'Completed',
                     items: _sorted(bookingCompleted),
                     buttonLabel: 'Review',
                     onTap: (item) => _openReviewDialog(context, item)),
 
-                  // Overdue
+
                   _BookingList(
                     statusLabel: 'Overdue',
                     items: _sorted(bookingOverdue),
                     buttonLabel: 'Go to Payment',
                     onTap: (item) => _handlePayment(context, item)),
 
-                  // Canceled
+
                   _BookingList(
                     statusLabel: 'Canceled',
                     items: _sorted(bookingCanceled),

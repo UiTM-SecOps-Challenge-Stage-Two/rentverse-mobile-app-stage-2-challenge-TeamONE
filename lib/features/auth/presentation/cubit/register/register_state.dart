@@ -1,4 +1,4 @@
-// lib/features/auth/presentation/cubit/register/register_state.dart
+
 import 'package:equatable/equatable.dart';
 
 enum RegisterStatus { initial, loading, success, failure }
@@ -8,8 +8,8 @@ class RegisterState extends Equatable {
   final bool isConfirmPasswordVisible;
   final RegisterStatus status;
   final String? errorMessage;
-  final String role; // <--- Properti Baru untuk Role
-  // Inline field errors
+  final String role;
+
   final String? nameError;
   final String? emailError;
   final String? phoneError;
@@ -21,7 +21,7 @@ class RegisterState extends Equatable {
     this.isConfirmPasswordVisible = false,
     this.status = RegisterStatus.initial,
     this.errorMessage,
-    this.role = "TENANT", // Default Value
+    this.role = "TENANT",
     this.nameError,
     this.emailError,
     this.phoneError,
@@ -34,7 +34,7 @@ class RegisterState extends Equatable {
     bool? isConfirmPasswordVisible,
     RegisterStatus? status,
     String? errorMessage,
-    String? role, // <--- Add CopyWith
+    String? role,
     String? nameError,
     String? emailError,
     String? phoneError,

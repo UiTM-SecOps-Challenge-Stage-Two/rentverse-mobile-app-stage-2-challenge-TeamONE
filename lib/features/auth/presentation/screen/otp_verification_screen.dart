@@ -10,7 +10,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String target;
-  final String channel; // 'EMAIL' or 'WHATSAPP'
+  final String channel;
 
   const OtpVerificationScreen({
     super.key,
@@ -33,7 +33,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   void initState() {
     super.initState();
-    // Send OTP immediately when opening
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _sendOtp();
       _focusNode.requestFocus();
@@ -168,8 +168,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-              
-              // Icon Section
+
+
               if (_isEmail) ...[
                 const Text(
                   'Email Verification',
@@ -180,8 +180,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                // Emulating the Gmail logo with an Icon for now as assets are missing
-                // In a real app with provided assets, we'd use Image.asset
+
+
                 Container(
                   padding: const EdgeInsets.all(20),
                   child: Icon(LucideIcons.mail,
@@ -201,13 +201,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 const SizedBox(height: 30),
                 Icon(LucideIcons.phone,
                   size: 80,
-                  color: Color(0xFF1E232C), // Dark color from design
+                  color: Color(0xFF1E232C),
                 ),
               ],
 
               const SizedBox(height: 30),
 
-              // Description Text
+
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
@@ -240,12 +240,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
               const SizedBox(height: 32),
 
-              // Custom Pin Input
+
               _buildPinCodeInput(),
 
               const SizedBox(height: 20),
 
-              // Resend Option
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -263,7 +263,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF00CED1), // Cyan like color
+                        color: Color(0xFF00CED1),
                       ),
                     ),
                   ),
@@ -272,14 +272,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
               const Spacer(),
 
-              // Verify Button
+
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _verifyOtp,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00CED1), // Cyan color
+                    backgroundColor: const Color(0xFF00CED1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -316,7 +316,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Hidden TextField for input handling
+
         SizedBox(
           height: 50,
           child: Opacity(
@@ -336,7 +336,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             ),
           ),
         ),
-        // Visible Boxes
+
         GestureDetector(
           onTap: () {
             _focusNode.requestFocus();

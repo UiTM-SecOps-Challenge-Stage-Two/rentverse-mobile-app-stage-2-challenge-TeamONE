@@ -1,7 +1,7 @@
-// lib/common/bloc/auth/auth_state.dart
+
 
 import 'package:equatable/equatable.dart';
-import '../../../features/auth/domain/entity/user_entity.dart'; // Pastikan path import ini benar
+import '../../../features/auth/domain/entity/user_entity.dart';
 
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -12,14 +12,14 @@ abstract class AuthState extends Equatable {
 
 class AppInitialState extends AuthState {}
 
-// UPDATE BAGIAN INI:
+
 class Authenticated extends AuthState {
-  final UserEntity user; // <--- Kantong untuk simpan data user
+  final UserEntity user;
 
   const Authenticated({required this.user});
 
   @override
-  List<Object?> get props => [user]; // Supaya Bloc tahu kalau user berubah
+  List<Object?> get props => [user];
 }
 
 class UnAuthenticated extends AuthState {}

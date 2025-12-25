@@ -1,4 +1,4 @@
-// lib/features/auth/data/source/auth_api_service.dart
+
 
 import 'dart:developer' as developer;
 
@@ -11,7 +11,7 @@ import 'package:rentverse/features/auth/data/models/response/user_model.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../../../core/network/response/base_response_model.dart';
 
-// 1. KONTRAK
+
 abstract class AuthApiService {
   Future<BaseResponseModel<LoginResponseModel>> login(LoginRequestModel body);
   Future<BaseResponseModel<UserModel>> register(RegisterRequestModel body);
@@ -32,7 +32,7 @@ abstract class AuthApiService {
   );
 }
 
-// 2. IMPLEMENTASI
+
 class AuthApiServiceImpl implements AuthApiService {
   final DioClient _dioClient;
 
@@ -52,7 +52,7 @@ class AuthApiServiceImpl implements AuthApiService {
         response.data,
         (json) => LoginResponseModel.fromJson(
           json as Map<String, dynamic>,
-        ), // Pakai wrapper
+        ),
       );
     } catch (e) {
       rethrow;
@@ -83,7 +83,7 @@ class AuthApiServiceImpl implements AuthApiService {
     try {
       final response = await _dioClient.get('/auth/me');
 
-      // Debug log raw payload for trust index debugging
+
       developer.log(
         'GET /auth/me raw response: ${response.data}',
         name: 'AuthApiService',

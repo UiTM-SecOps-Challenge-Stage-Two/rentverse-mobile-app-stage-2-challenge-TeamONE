@@ -161,7 +161,7 @@ class _AddPropertyBasicPageState extends State<AddPropertyBasicPage> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                // Map picker / preview (opens OpenStreetMap for selection)
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: state.latitude != null && state.longitude != null
@@ -210,7 +210,7 @@ class _AddPropertyBasicPageState extends State<AddPropertyBasicPage> {
                           initialLon: state.longitude ?? 106.816666,
                           onLocationSelected:
                               (lat, lon, city, country, displayName) {
-                                // update cubit with selected coordinates and address
+
                                 context.read<AddPropertyCubit>().updateBasic(
                                   address: displayName ?? state.address,
                                   city: city ?? state.city,
@@ -276,10 +276,10 @@ class _AddPropertyBasicPageState extends State<AddPropertyBasicPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Container(
-                          margin: const EdgeInsets.all(2), // Border width
+                          margin: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(10), // 12 - 2
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Material(
                             color: Colors.transparent,

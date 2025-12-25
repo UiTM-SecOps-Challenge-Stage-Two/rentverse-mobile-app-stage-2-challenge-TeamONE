@@ -1,4 +1,4 @@
-// lib/common/screen/navigation_container.dart
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +46,7 @@ class _NavigationContainerState extends State<NavigationContainer> {
 
   Future<void> _restartPage(int index) async {
     setState(() => _reloadTicks[index]++);
-    // Small delay so RefreshIndicator can complete smoothly
+
     await Future.delayed(const Duration(milliseconds: 200));
   }
 
@@ -90,7 +90,6 @@ Widget _buildBody(
   );
 }
 
-// Example listener: show a quick snackbar when a global reload is requested.
 
 Widget _buildBottomNavigationBar(
   BuildContext context,

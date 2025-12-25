@@ -1,11 +1,11 @@
-// lib/features/auth/domain/entity/profile_entity.dart
+
 
 import 'package:equatable/equatable.dart';
 
-// Berdasarkan model TenantTrustProfile
+
 class TenantProfileEntity extends Equatable {
   final String id;
-  final double ttiScore; // Float di Prisma = double di Dart
+  final double ttiScore;
   final String kycStatus;
   final int paymentFaults;
 
@@ -20,7 +20,7 @@ class TenantProfileEntity extends Equatable {
   List<Object?> get props => [id, ttiScore, kycStatus, paymentFaults];
 }
 
-// Berdasarkan model LandlordTrustProfile [cite: 31]
+
 class LandlordProfileEntity extends Equatable {
   final String id;
   final double lrsScore;

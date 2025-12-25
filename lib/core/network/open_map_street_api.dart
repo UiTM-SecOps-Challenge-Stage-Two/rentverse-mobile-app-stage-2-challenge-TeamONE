@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 
-/// Lightweight API client for OpenStreetMap / Nominatim endpoints.
-/// Provides a dedicated Dio instance with correct base URL and User-Agent.
+
 class OpenMapStreetApi {
   OpenMapStreetApi({Dio? dio})
     : _dio =

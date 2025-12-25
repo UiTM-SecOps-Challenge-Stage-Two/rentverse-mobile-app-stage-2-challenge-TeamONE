@@ -1,4 +1,4 @@
-// lib/core/network/response/base_response_model.dart
+
 class BaseResponseModel<T> {
   final String status;
   final String? message;

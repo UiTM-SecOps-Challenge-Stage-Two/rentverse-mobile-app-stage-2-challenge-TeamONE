@@ -11,9 +11,9 @@ class ChatSocketService {
   final Logger _logger;
   final SharedPreferences _preferences;
 
-  // static const String _url = 'wss://beetle-sincere-obviously.ngrok-free.app';
+
   static const String _url = 'wss://rvapi.ilhamdean.cloud';
-  // static const String _url = 'ws://127.0.0.1:3000';
+
 
   static const String joinRoomEvent = 'JOIN_ROOM';
   static const String leaveRoomEvent = 'LEAVE_ROOM';

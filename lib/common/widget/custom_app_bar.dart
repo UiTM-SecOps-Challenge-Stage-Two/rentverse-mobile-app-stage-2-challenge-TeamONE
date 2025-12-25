@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-/// Reusable app bar used across tenant screens.
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String displayName;
   final Color? backgroundColor;

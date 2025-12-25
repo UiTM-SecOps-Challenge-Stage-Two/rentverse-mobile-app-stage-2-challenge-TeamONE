@@ -18,8 +18,8 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
        super(const ChatRoomState());
 
   final GetMessagesUseCase _getMessagesUseCase;
-  // ignore: unused_field
-  // HTTP send currently unused; messages are sent via socket
+
+
   final ChatSocketService _socketService;
   final NotificationService? _notificationService;
   final String currentUserId;
@@ -67,13 +67,13 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     _socketSubscription?.cancel();
     _socketSubscription = _socketService.messageStream.listen((raw) {
       try {
-        // Debug: trace every incoming payload for this room
-        // ignore: avoid_print
+
+
         print('CHAT_ROOM SOCKET RAW room=$roomId payload=$raw');
 
-        // The socket emits a Map payload. Some backends wrap the useful
-        // message(s) under the `data` key and that value can be either a
-        // single map or a list of maps. Normalize to a list of raw maps.
+
+
+
         final raws = <Map<String, dynamic>>[];
         final payload = raw['data'] ?? raw;
         if (payload is List) {
@@ -94,18 +94,18 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
             final message = model.toEntity(currentUserId: currentUserId);
             if (message.roomId != roomId) continue;
 
-            // Deduplicate by id to avoid duplicates from optimistic updates
+
             final exists = current.any((m) => m.id == message.id);
             if (exists) continue;
 
             current.add(message);
             added = true;
-            // ignore: avoid_print
+
             print(
               'CHAT_ROOM NEW_MESSAGE room=${message.roomId} id=${message.id} content=${message.content} at=${message.createdAt.toIso8601String()}',
             );
           } catch (_) {
-            // ignore malformed entry
+
           }
         }
 
@@ -125,7 +125,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
 
     emit(state.copyWith(sending: true, error: null));
 
-    // Optimistic UI update so the message appears immediately
+
     final optimistic = ChatMessageEntity(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       roomId: roomId,
@@ -140,7 +140,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     emit(state.copyWith(messages: updated, status: ChatRoomStatus.success));
 
     try {
-      // Send via WebSocket only (backend expects socket event, not HTTP CRUD)
+
       _socketService.sendMessage(roomId, content);
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
@@ -175,13 +175,13 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
 
         current.add(message);
         current.sort((a, b) => a.createdAt.compareTo(b.createdAt));
-        // ignore: avoid_print
+
         print(
           'CHAT_ROOM NOTIF NEW_MESSAGE room=${message.roomId} id=${message.id} content=${message.content} at=${message.createdAt.toIso8601String()}',
         );
         emit(state.copyWith(messages: current, status: ChatRoomStatus.success));
       } catch (_) {
-        // ignore parse errors
+
       }
     });
   }

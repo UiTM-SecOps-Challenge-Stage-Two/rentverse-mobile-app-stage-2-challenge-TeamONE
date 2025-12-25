@@ -8,7 +8,7 @@ import 'package:rentverse/features/auth/domain/usecase/login_usecase.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  // Inject UseCase Asli
+
   final LoginUseCase _loginUseCase;
   final NotificationService _notificationService;
 
@@ -20,17 +20,17 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> submitLogin(String email, String password) async {
-    // 1. Emit Loading
+
     emit(state.copyWith(status: LoginStatus.loading));
 
-    // 2. Panggil UseCase (Logic Bisnis)
+
     final result = await _loginUseCase(
       param: LoginRequestEntity(email: email, password: password),
     );
 
-    // 3. Cek Hasil (Success / Failed)
+
     if (result is DataSuccess) {
-      // Register device token silently; don't block login flow on failure.
+
       try {
         await _notificationService.requestPermission();
         await _notificationService.configureForegroundPresentation();
@@ -40,7 +40,7 @@ class LoginCubit extends Cubit<LoginState> {
 
       emit(state.copyWith(status: LoginStatus.success));
     } else if (result is DataFailed) {
-      // Ambil pesan error dari API terlebih dahulu
+
       final apiMessage = resolveApiErrorMessage(result.error, fallback: '');
       final errorMsg = apiMessage;
 

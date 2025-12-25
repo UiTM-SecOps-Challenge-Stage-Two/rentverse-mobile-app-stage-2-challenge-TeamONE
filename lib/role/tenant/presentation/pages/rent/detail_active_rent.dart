@@ -265,7 +265,7 @@ class _ActionBarState extends State<_ActionBar> {
         outcome == ReviewOutcome.alreadyReviewed) {
       setState(() => _alreadyReviewed = true);
       if (outcome == ReviewOutcome.submitted) {
-        // Optionally show the review list after submit? Keeping as-is.
+
       }
     }
   }

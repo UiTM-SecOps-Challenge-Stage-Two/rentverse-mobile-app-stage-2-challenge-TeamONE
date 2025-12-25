@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class SearchAndSortState extends Equatable {
   final String query;
-  final String selectedType; // e.g., All, House, Apartment, Townhouse
+  final String selectedType;
 
   const SearchAndSortState({this.query = '', this.selectedType = 'All'});
 

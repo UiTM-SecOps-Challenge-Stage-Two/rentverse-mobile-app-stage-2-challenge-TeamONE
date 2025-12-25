@@ -1,4 +1,4 @@
-// lib/features/auth/presentation/widget/custom_button.dart
+
 
 import 'package:flutter/material.dart';
 import '../../../../common/colors/custom_color.dart';
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
-        gradient: customLinearGradient, // Menggunakan gradient yang kamu minta
+        gradient: customLinearGradient,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Material(

@@ -1,4 +1,4 @@
-//lib/role/tenant/presentation/pages/property/detail_property.dart
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -118,7 +118,7 @@ class DetailProperty extends StatelessWidget {
                               const SizedBox(height: 8),
                               _LocationMap(property: currentProperty),
                               const SizedBox(height: 12),
-                              // Property availability (unavailable ranges)
+
                               PropertyAvailabilityWidget(
                                 propertyId: currentProperty.id,
                               ),

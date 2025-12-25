@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 
-/// Extracts a human-friendly error message from a DioException using common
-/// API response shapes. It prefers the backend-provided `message` field and
-/// falls back to status text or the exception message.
+
 String resolveApiErrorMessage(
   DioException? error, {
   String fallback = 'Terjadi kesalahan',

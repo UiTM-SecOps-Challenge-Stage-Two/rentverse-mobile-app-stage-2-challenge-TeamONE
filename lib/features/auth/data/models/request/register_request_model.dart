@@ -1,4 +1,4 @@
-// lib/features/auth/data/models/request/register_request_model.dart
+
 
 import 'package:rentverse/features/auth/domain/entity/register_request_enity.dart';
 
@@ -9,7 +9,7 @@ class RegisterRequestModel extends RegisterRequestEntity {
     required super.name,
     required super.phone,
     required super.role,
-    // Parameter lain sesuai kebutuhan
+
   });
 
   factory RegisterRequestModel.fromEntity(RegisterRequestEntity entity) {
@@ -29,8 +29,8 @@ class RegisterRequestModel extends RegisterRequestEntity {
       'name': name,
       'phone': phone,
       'role': role,
-      // Contoh translasi:
-      // 'phone_number': phone (Jika API minta snake_case)
+
+
     };
   }
 }

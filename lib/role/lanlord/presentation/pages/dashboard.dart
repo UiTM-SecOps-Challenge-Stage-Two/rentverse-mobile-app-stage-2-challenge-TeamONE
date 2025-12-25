@@ -101,7 +101,7 @@ class _LandlordDashboardView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top: wallet card full width (styled like MyWallet BalanceCard)
+
           _DashboardWalletCard(totalIncome: overview?.totalIncome),
           const SizedBox(height: 16),
           StatsWidget(
@@ -123,11 +123,11 @@ class _LandlordDashboardView extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          // Trust index below stats
+
           YourTrustIndex(score: (overview?.trust.score ?? 0).toDouble()),
           const SizedBox(height: 16),
           const SizedBox(height: 16),
-          // Property Being Proposed - sourced from landlord properties API
+
           BlocBuilder<LandlordPropertyCubit, LandlordPropertyState>(
             builder: (context, propsState) {
               if (propsState.status == LandlordPropertyStatus.loading) {
@@ -160,7 +160,7 @@ class _LandlordDashboardView extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
-          // Rented properties - show properties with bookings (api-driven)
+
           BlocBuilder<LandlordPropertyCubit, LandlordPropertyState>(
             builder: (context, propsState) {
               if (propsState.status == LandlordPropertyStatus.loading) {

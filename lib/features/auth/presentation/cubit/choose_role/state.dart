@@ -1,4 +1,4 @@
-// lib/features/auth/presentation/cubit/choose_role/state.dart
+
 
 enum UserRole { tenant, owner }
 

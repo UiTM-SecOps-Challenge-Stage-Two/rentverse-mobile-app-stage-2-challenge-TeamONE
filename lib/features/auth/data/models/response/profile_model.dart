@@ -1,6 +1,6 @@
 
 
-// --- TENANT PROFILE MODEL ---
+
 import 'package:rentverse/features/auth/domain/entity/profile_entity.dart';
 
 class TenantProfileModel extends TenantProfileEntity {
@@ -14,7 +14,7 @@ class TenantProfileModel extends TenantProfileEntity {
   factory TenantProfileModel.fromJson(Map<String, dynamic> json) {
     return TenantProfileModel(
       id: json['id'],
-      // Safety: Mengubah num (int/double) menjadi double
+
       ttiScore: (json['tti_score'] as num?)?.toDouble() ?? 0.0,
       kycStatus: json['kyc_status'] ?? 'PENDING',
       paymentFaults: json['payment_faults'] ?? 0,
@@ -31,7 +31,7 @@ class TenantProfileModel extends TenantProfileEntity {
   }
 }
 
-// --- LANDLORD PROFILE MODEL ---
+
 class LandlordProfileModel extends LandlordProfileEntity {
   const LandlordProfileModel({
     required super.id,

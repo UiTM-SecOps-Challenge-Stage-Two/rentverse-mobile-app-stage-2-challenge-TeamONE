@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 class TrustIndexState extends Equatable {
-  final double trustScore; // TTI score (0-100)
-  final double rating; // Avg rating from owners
-  final int reviewCount; // Total reviews
+  final double trustScore;
+  final double rating;
+  final int reviewCount;
   final List<TrustReview> reviews;
   final bool isLoading;
   final String? error;

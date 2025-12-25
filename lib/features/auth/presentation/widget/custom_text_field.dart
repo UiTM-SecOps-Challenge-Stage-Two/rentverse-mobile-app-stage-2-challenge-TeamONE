@@ -1,4 +1,4 @@
-// lib/features/auth/presentation/widget/custom_text_field.dart
+
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,8 +13,8 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool readOnly;
   final VoidCallback? onTap;
-  final String? initialValue; // Khusus untuk case seperti Role Picker
-  final String? errorText; // Inline error below the field
+  final String? initialValue;
+  final String? errorText;
   final ValueChanged<String>? onChanged;
 
   const CustomTextField({

@@ -10,7 +10,7 @@ class AddPropertyCubit extends Cubit<AddPropertyState> {
 
   final CreatePropertyUseCase _createPropertyUseCase;
 
-  // Attribute type ids are backend-specific; adjust when reference data is available.
+
   static const int _sizeAttributeId = 1;
   static const int _bedroomAttributeId = 2;
   static const int _bathroomAttributeId = 3;

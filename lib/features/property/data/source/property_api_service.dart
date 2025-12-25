@@ -90,13 +90,13 @@ class PropertyApiServiceImpl implements PropertyApiService {
     try {
       final formData = FormData();
 
-      // Add text fields (convert complex objects to JSON string beforehand)
+
       fields.forEach((key, value) {
         if (value == null) return;
         formData.fields.add(MapEntry(key, value.toString()));
       });
 
-      // Attach files
+
       for (final path in imageFilePaths) {
         if (path.isEmpty) continue;
         final filename = p.basename(path);
